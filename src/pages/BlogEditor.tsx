@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Save, Image, Link2, List, ListOrdered, Bold, Italic, Heading, Quote, Code, FileText } from "lucide-react";
+import { Save, Image, Link2, List, ListOrdered, Bold, Italic, Heading, Quote, Code, FileText, Calendar, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
