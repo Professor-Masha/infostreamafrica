@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Edit, Trash2, Eye, Plus, FileText, Filter } from "lucide-react";
+import { Edit, Trash2, Eye, Plus, FileText, Filter, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Article } from "@/types/article";
+import { useAuth } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Mock data for user's articles
 const mockArticles: Article[] = [
@@ -16,7 +18,7 @@ const mockArticles: Article[] = [
     description: "A beginner's guide to starting a career in medical research.",
     content: "<p>This is a sample content for the article about medical research.</p>",
     date: "2023-05-20",
-    author: "Dr. John Smith",
+    author: "admin",
     category: "Medicine",
     status: "published",
     tags: ["medicine", "research", "career"],
@@ -27,7 +29,7 @@ const mockArticles: Article[] = [
     description: "A deep dive into the process of protein synthesis and its importance.",
     content: "<p>This is a sample content about protein synthesis.</p>",
     date: "2023-05-15",
-    author: "Dr. Jane Doe",
+    author: "blogger1",
     category: "Biochemistry",
     status: "draft",
     tags: ["biochemistry", "proteins", "cellular biology"],
@@ -38,7 +40,7 @@ const mockArticles: Article[] = [
     description: "Exploring the latest developments in CRISPR gene editing.",
     content: "<p>This is sample content about CRISPR technology advancements.</p>",
     date: "2023-05-10",
-    author: "Dr. Alex Johnson",
+    author: "blogger2",
     category: "Biology",
     status: "published",
     tags: ["crispr", "gene editing", "biotechnology"],
@@ -52,15 +54,23 @@ export default function MyArticles() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     // Simulate API call to get user's articles
     setIsLoading(true);
     setTimeout(() => {
-      setArticles(mockArticles);
+      let filteredArticles = [...mockArticles];
+      
+      // If not admin, only show the current user's articles
+      if (!isAdmin && user) {
+        filteredArticles = mockArticles.filter(article => article.author === user.username);
+      }
+      
+      setArticles(filteredArticles);
       setIsLoading(false);
     }, 500);
-  }, []);
+  }, [isAdmin, user]);
 
   const filteredArticles = articles.filter(article => {
     // Apply status filter
@@ -101,105 +111,156 @@ export default function MyArticles() {
     });
   };
 
+  const handlePublish = (id: string, shouldPublish: boolean) => {
+    // In a real app, this would be an API call to publish/unpublish the article
+    setArticles(prev => 
+      prev.map(article => 
+        article.id === id 
+          ? { ...article, status: shouldPublish ? 'published' : 'draft' } 
+          : article
+      )
+    );
+    
+    toast({
+      title: shouldPublish ? "Article published" : "Article unpublished",
+      description: shouldPublish 
+        ? "The article has been published successfully." 
+        : "The article has been moved back to drafts."
+    });
+  };
+
   return (
-    <div className="max-w-5xl mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Articles</h1>
-        <Button onClick={handleCreateNew}>
-          <Plus className="mr-2 h-4 w-4" />
-          Create New
-        </Button>
-      </div>
-      
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="flex-1">
-          <Input
-            placeholder="Search articles..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full"
-          />
+    <ProtectedRoute>
+      <div className="max-w-5xl mx-auto py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">
+            {isAdmin ? "All Articles" : "My Articles"}
+          </h1>
+          <Button onClick={handleCreateNew}>
+            <Plus className="mr-2 h-4 w-4" />
+            Create New
+          </Button>
         </div>
         
-        <div className="w-full md:w-48">
-          <Select 
-            value={filter} 
-            onValueChange={(value: "all" | "published" | "draft") => setFilter(value)}
-          >
-            <SelectTrigger>
-              <Filter className="mr-2 h-4 w-4" />
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Articles</SelectItem>
-              <SelectItem value="published">Published</SelectItem>
-              <SelectItem value="draft">Drafts</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex-1">
+            <Input
+              placeholder="Search articles..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          
+          <div className="w-full md:w-48">
+            <Select 
+              value={filter} 
+              onValueChange={(value: "all" | "published" | "draft") => setFilter(value)}
+            >
+              <SelectTrigger>
+                <Filter className="mr-2 h-4 w-4" />
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Articles</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
+                <SelectItem value="draft">Drafts</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-      </div>
-      
-      {isLoading ? (
-        <div className="flex justify-center py-10">
-          <p>Loading articles...</p>
-        </div>
-      ) : filteredArticles.length === 0 ? (
-        <div className="text-center py-10 border rounded-md">
-          <FileText className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-          <h3 className="text-lg font-medium">No articles found</h3>
-          <p className="text-muted-foreground mb-4">
-            {search ? "Try adjusting your search criteria." : "Start creating your first article."}
-          </p>
-          <Button onClick={handleCreateNew}>Create New Article</Button>
-        </div>
-      ) : (
-        <div className="border rounded-md overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-muted">
-              <tr>
-                <th className="text-left p-3 font-medium">Title</th>
-                <th className="text-left p-3 font-medium hidden md:table-cell">Category</th>
-                <th className="text-left p-3 font-medium hidden md:table-cell">Date</th>
-                <th className="text-left p-3 font-medium">Status</th>
-                <th className="text-right p-3 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {filteredArticles.map((article) => (
-                <tr key={article.id} className="hover:bg-muted/50">
-                  <td className="p-3">{article.title}</td>
-                  <td className="p-3 hidden md:table-cell">{article.category}</td>
-                  <td className="p-3 hidden md:table-cell">{article.date}</td>
-                  <td className="p-3">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      article.status === 'published' 
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
-                        : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300'
-                    }`}>
-                      {article.status === 'published' ? 'Published' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="p-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      {article.status === 'published' && (
-                        <Button variant="ghost" size="icon" onClick={() => handleView(article.id)}>
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                      )}
-                      <Button variant="ghost" size="icon" onClick={() => handleEdit(article.id)}>
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(article.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </td>
+        
+        {isLoading ? (
+          <div className="flex justify-center py-10">
+            <p>Loading articles...</p>
+          </div>
+        ) : filteredArticles.length === 0 ? (
+          <div className="text-center py-10 border rounded-md">
+            <FileText className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
+            <h3 className="text-lg font-medium">No articles found</h3>
+            <p className="text-muted-foreground mb-4">
+              {search ? "Try adjusting your search criteria." : "Start creating your first article."}
+            </p>
+            <Button onClick={handleCreateNew}>Create New Article</Button>
+          </div>
+        ) : (
+          <div className="border rounded-md overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-muted">
+                <tr>
+                  <th className="text-left p-3 font-medium">Title</th>
+                  {isAdmin && (
+                    <th className="text-left p-3 font-medium hidden md:table-cell">Author</th>
+                  )}
+                  <th className="text-left p-3 font-medium hidden md:table-cell">Category</th>
+                  <th className="text-left p-3 font-medium hidden md:table-cell">Date</th>
+                  <th className="text-left p-3 font-medium">Status</th>
+                  <th className="text-right p-3 font-medium">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
+              </thead>
+              <tbody className="divide-y">
+                {filteredArticles.map((article) => (
+                  <tr key={article.id} className="hover:bg-muted/50">
+                    <td className="p-3">{article.title}</td>
+                    {isAdmin && (
+                      <td className="p-3 hidden md:table-cell">{article.author}</td>
+                    )}
+                    <td className="p-3 hidden md:table-cell">{article.category}</td>
+                    <td className="p-3 hidden md:table-cell">{article.date}</td>
+                    <td className="p-3">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        article.status === 'published' 
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
+                          : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300'
+                      }`}>
+                        {article.status === 'published' ? 'Published' : 'Draft'}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <div className="flex justify-end gap-2">
+                        {article.status === 'published' && (
+                          <Button variant="ghost" size="icon" onClick={() => handleView(article.id)}>
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        )}
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(article.id)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        
+                        {isAdmin && article.status === 'draft' && (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handlePublish(article.id, true)}
+                            title="Publish article"
+                          >
+                            <Check className="h-4 w-4 text-green-600" />
+                          </Button>
+                        )}
+                        
+                        {isAdmin && article.status === 'published' && (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={() => handlePublish(article.id, false)}
+                            title="Unpublish article"
+                          >
+                            <X className="h-4 w-4 text-amber-600" />
+                          </Button>
+                        )}
+                        
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(article.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </ProtectedRoute>
   );
 }

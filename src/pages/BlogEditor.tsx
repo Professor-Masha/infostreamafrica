@@ -8,6 +8,8 @@ import { ArticleEditor } from "@/components/ArticleEditor";
 import { ArticlePreview } from "@/components/ArticlePreview";
 import { useToast } from "@/hooks/use-toast";
 import { Article } from "@/types/article";
+import { useAuth } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Mock categories for our editor
 const categories = [
@@ -27,7 +29,7 @@ const initialArticle: Article = {
   description: "",
   content: "",
   date: new Date().toISOString().split('T')[0],
-  author: "Your Name",
+  author: "",
   category: "Medicine",
   status: "draft",
   tags: []
@@ -39,9 +41,16 @@ export default function BlogEditor() {
   const [article, setArticle] = useState<Article>(initialArticle);
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<string>("");
-  const [preview, setPreview] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user, isAdmin } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      // Set the author based on the logged-in user
+      setArticle(prev => ({ ...prev, author: user.username }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (id) {
@@ -55,7 +64,7 @@ export default function BlogEditor() {
           description: "This is a placeholder for an existing article.",
           content: "<p>This is the content of an existing article. It would be loaded from the server in a real application.</p>",
           date: new Date().toISOString().split('T')[0],
-          author: "Your Name",
+          author: user?.username || "Unknown",
           category: "Medicine",
           status: "draft",
           tags: ["medicine", "research"]
@@ -65,7 +74,7 @@ export default function BlogEditor() {
         setIsLoading(false);
       }, 500);
     }
-  }, [id]);
+  }, [id, user]);
 
   const handleContentChange = (content: string) => {
     setArticle(prev => ({ ...prev, content }));
@@ -124,51 +133,55 @@ export default function BlogEditor() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">
-          {id ? "Edit Article" : "Create New Article"}
-        </h1>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            onClick={() => handleSave('draft')} 
-            disabled={isLoading}
-          >
-            Save Draft
-          </Button>
-          <Button 
-            onClick={() => handleSave('published')} 
-            disabled={isLoading}
-          >
-            {isLoading ? "Saving..." : "Publish"}
-          </Button>
+    <ProtectedRoute requiredRole="any">
+      <div className="max-w-5xl mx-auto py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">
+            {id ? "Edit Article" : "Create New Article"}
+          </h1>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => handleSave('draft')} 
+              disabled={isLoading}
+            >
+              Save Draft
+            </Button>
+            {isAdmin && (
+              <Button 
+                onClick={() => handleSave('published')} 
+                disabled={isLoading}
+              >
+                {isLoading ? "Saving..." : "Publish"}
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
 
-      <Tabs defaultValue="editor" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="editor">Editor</TabsTrigger>
-          <TabsTrigger value="preview">Preview</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="editor">
-          <ArticleEditor 
-            article={article}
-            categories={categories}
-            tags={tags}
-            setArticle={setArticle}
-            setTags={setTags}
-            fileInputRef={fileInputRef}
-            handleImageUpload={handleImageUpload}
-            handleContentChange={handleContentChange}
-          />
-        </TabsContent>
-        
-        <TabsContent value="preview">
-          <ArticlePreview article={article} tags={tags} />
-        </TabsContent>
-      </Tabs>
-    </div>
+        <Tabs defaultValue="editor" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="editor">Editor</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="editor">
+            <ArticleEditor 
+              article={article}
+              categories={categories}
+              tags={tags}
+              setArticle={setArticle}
+              setTags={setTags}
+              fileInputRef={fileInputRef}
+              handleImageUpload={handleImageUpload}
+              handleContentChange={handleContentChange}
+            />
+          </TabsContent>
+          
+          <TabsContent value="preview">
+            <ArticlePreview article={article} tags={tags} />
+          </TabsContent>
+        </Tabs>
+      </div>
+    </ProtectedRoute>
   );
 }
