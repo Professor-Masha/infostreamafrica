@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
   username: string;
   role: 'admin' | 'blogger';
+  email?: string;
 }
 
 interface AuthContextType {

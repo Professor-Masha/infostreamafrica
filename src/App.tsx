@@ -34,7 +34,7 @@ const App = () => {
                   {/* Public login route */}
                   <Route path="/login" element={<Login />} />
                   
-                  {/* Authenticated routes within layout */}
+                  {/* Public routes within layout */}
                   <Route element={<Layout />}>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/search" element={<Search />} />
@@ -46,10 +46,22 @@ const App = () => {
                     <Route path="/journals" element={<Dashboard />} />
                     <Route path="/conferences" element={<Dashboard />} />
                     
-                    {/* Blog writing platform routes - protected */}
-                    <Route path="/blog/new" element={<BlogEditor />} />
-                    <Route path="/blog/edit/:id" element={<BlogEditor />} />
-                    <Route path="/my-articles" element={<MyArticles />} />
+                    {/* Protected routes for both blogger and admin */}
+                    <Route path="/blog/new" element={
+                      <ProtectedRoute requiredRole="any">
+                        <BlogEditor />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/blog/edit/:id" element={
+                      <ProtectedRoute requiredRole="any">
+                        <BlogEditor />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/my-articles" element={
+                      <ProtectedRoute requiredRole="any">
+                        <MyArticles />
+                      </ProtectedRoute>
+                    } />
                   </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>
