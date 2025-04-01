@@ -10,6 +10,8 @@ import Dashboard from "@/pages/Dashboard";
 import Search from "@/pages/Search";
 import ArticleDetail from "@/pages/ArticleDetail";
 import NotFound from "@/pages/NotFound";
+import BlogEditor from "@/pages/BlogEditor";
+import MyArticles from "@/pages/MyArticles";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,11 @@ const App = () => (
               <Route path="/clinical-research" element={<Dashboard />} />
               <Route path="/journals" element={<Dashboard />} />
               <Route path="/conferences" element={<Dashboard />} />
+              
+              {/* Blog writing platform routes */}
+              <Route path="/blog/new" element={<BlogEditor />} />
+              <Route path="/blog/edit/:id" element={<BlogEditor />} />
+              <Route path="/my-articles" element={<MyArticles />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

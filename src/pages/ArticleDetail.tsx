@@ -44,8 +44,9 @@ const articles = [
     ],
     isNew: true,
     isTrending: true,
+    isUpdated: false,
   },
-  // ... add other articles from previous components
+  // Add isUpdated property to other articles as needed
 ];
 
 // Mock related articles
@@ -58,6 +59,9 @@ const relatedArticles = [
     author: "Dr. David Lee",
     category: "Computational Biology",
     image: "https://images.unsplash.com/photo-1526666923127-b2970f64b422?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: 8,
@@ -67,6 +71,9 @@ const relatedArticles = [
     author: "Dr. Lisa Patel",
     category: "Epidemiology",
     image: "https://images.unsplash.com/photo-1584115202321-cbfa3d714848?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: 9,
@@ -76,6 +83,9 @@ const relatedArticles = [
     author: "Dr. Jennifer Adams",
     category: "Genetics",
     image: "https://images.unsplash.com/photo-1580800434532-f1e5e44fcfb0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 

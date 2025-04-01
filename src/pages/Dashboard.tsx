@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -26,6 +25,7 @@ const featuredArticles = [
     image: "https://images.unsplash.com/photo-1584483766114-2cea6facdf57?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
     isNew: true,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: 2,
@@ -36,6 +36,8 @@ const featuredArticles = [
     category: "Neuroscience",
     image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
     isTrending: true,
+    isNew: false,
+    isUpdated: false,
   },
   {
     id: 3,
@@ -46,6 +48,8 @@ const featuredArticles = [
     category: "Genetics",
     image: "https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
     isUpdated: true,
+    isNew: false,
+    isTrending: false,
   },
 ];
 
@@ -59,6 +63,8 @@ const latestArticles = [
     category: "Pharmacology",
     image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: 5,
@@ -68,6 +74,9 @@ const latestArticles = [
     author: "Dr. Robert Kim",
     category: "Virology",
     image: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: 6,
@@ -77,6 +86,9 @@ const latestArticles = [
     author: "Dr. Patricia Moore",
     category: "Neurology",
     image: "https://images.unsplash.com/photo-1559757175-7cb057fba93c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 
