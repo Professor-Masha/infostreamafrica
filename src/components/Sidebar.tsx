@@ -1,4 +1,3 @@
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -19,7 +18,8 @@ import {
   History,
   Trophy,
   TrendingUp,
-  Newspaper
+  Newspaper,
+  BarChart
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -36,12 +36,14 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import { useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Sidebar({ className }: { className?: string }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { state, setOpen } = useSidebar();
-
+  const { user } = useAuth();
+  
   useEffect(() => {
     const handleHover = () => {
       const group = document.querySelector('.group');
@@ -146,6 +148,14 @@ export function Sidebar({ className }: { className?: string }) {
     },
   ];
 
+  const adminNavItems = [
+    {
+      name: "Analytics",
+      href: "/analytics",
+      icon: BarChart,
+    },
+  ];
+
   return (
     <>
       <UISidebar className={className}>
@@ -221,6 +231,28 @@ export function Sidebar({ className }: { className?: string }) {
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
+
+            {user?.role === "admin" && (
+              <SidebarGroup>
+                <SidebarGroupLabel>Administration</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {adminNavItems.map((item) => (
+                      <SidebarMenuItem key={item.href}>
+                        <SidebarMenuButton
+                          isActive={location.pathname === item.href}
+                          onClick={() => navigate(item.href)}
+                          tooltip={state === "collapsed" ? item.name : undefined}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.name}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
           </SidebarContent>
         </div>
       </UISidebar>

@@ -1,12 +1,11 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, User, Tag, Share2, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArticleCard } from "@/components/ArticleCard";
+import { analyticsService } from "@/services/analyticsService";
 
-// Mock article data
 const articles = [
   {
     id: 1,
@@ -46,10 +45,8 @@ const articles = [
     isTrending: true,
     isUpdated: false,
   },
-  // Add isUpdated property to other articles as needed
 ];
 
-// Mock related articles
 const relatedArticles = [
   {
     id: 7,
@@ -96,12 +93,31 @@ export default function ArticleDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate API fetch
     setIsLoading(true);
     setTimeout(() => {
       const foundArticle = articles.find((a) => a.id === Number(id));
       setArticle(foundArticle || null);
       setIsLoading(false);
+      
+      if (foundArticle) {
+        analyticsService.trackInteraction(
+          id || 'unknown',
+          foundArticle.category,
+          'view',
+          { title: foundArticle.title, fullArticle: true }
+        );
+        
+        const timer = setTimeout(() => {
+          analyticsService.trackInteraction(
+            id || 'unknown',
+            foundArticle.category,
+            'read',
+            { title: foundArticle.title }
+          );
+        }, 30000);
+        
+        return () => clearTimeout(timer);
+      }
     }, 800);
   }, [id]);
 
@@ -111,6 +127,30 @@ export default function ArticleDetail() {
 
   const handleRelatedArticleClick = (articleId: number) => {
     navigate(`/article/${articleId}`);
+  };
+  
+  const handleShare = () => {
+    if (article) {
+      analyticsService.trackInteraction(
+        id || 'unknown',
+        article.category,
+        'share',
+        { title: article.title }
+      );
+      alert(`Sharing article: ${article.title}`);
+    }
+  };
+  
+  const handleBookmark = () => {
+    if (article) {
+      analyticsService.trackInteraction(
+        id || 'unknown',
+        article.category,
+        'bookmark',
+        { title: article.title }
+      );
+      alert(`Bookmarked article: ${article.title}`);
+    }
   };
 
   if (isLoading) {
@@ -189,10 +229,10 @@ export default function ArticleDetail() {
             {article.isUpdated && <span className="badge-updated">Updated</span>}
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={handleShare}>
               <Share2 className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={handleBookmark}>
               <Bookmark className="h-4 w-4" />
             </Button>
           </div>
@@ -220,12 +260,16 @@ export default function ArticleDetail() {
           {relatedArticles.map((article) => (
             <ArticleCard
               key={article.id}
+              id={article.id.toString()}
               title={article.title}
               description={article.description}
               date={article.date}
               author={article.author}
               category={article.category}
               image={article.image}
+              isNew={article.isNew}
+              isTrending={article.isTrending}
+              isUpdated={article.isUpdated}
               onClick={() => handleRelatedArticleClick(article.id)}
             />
           ))}

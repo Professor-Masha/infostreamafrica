@@ -44,6 +44,7 @@ export function CategoryPage({
             {trendingArticles.map((article) => (
               <ArticleCard
                 key={article.id}
+                id={article.id}
                 title={article.title}
                 description={article.description}
                 date={article.date}
@@ -66,6 +67,7 @@ export function CategoryPage({
               {articles.map((article) => (
                 <ArticleCard
                   key={article.id}
+                  id={article.id}
                   title={article.title}
                   description={article.description}
                   date={article.date}

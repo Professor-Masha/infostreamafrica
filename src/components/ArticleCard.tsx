@@ -1,5 +1,7 @@
 
 import { cn } from "@/lib/utils";
+import { analyticsService } from "@/services/analyticsService";
+import { useEffect } from "react";
 
 interface ArticleCardProps {
   title: string;
@@ -13,6 +15,7 @@ interface ArticleCardProps {
   isUpdated?: boolean;
   className?: string;
   onClick?: () => void;
+  id: string; // Add id prop to track the article
 }
 
 export function ArticleCard({
@@ -27,14 +30,34 @@ export function ArticleCard({
   isUpdated,
   className,
   onClick,
+  id,
 }: ArticleCardProps) {
+  // Track that the article card was viewed
+  useEffect(() => {
+    analyticsService.trackInteraction(id, category, 'view', { 
+      title, 
+      isNew, 
+      isTrending, 
+      isUpdated 
+    });
+  }, [id, category, title, isNew, isTrending, isUpdated]);
+
+  // Enhanced onClick handler to track clicks
+  const handleClick = () => {
+    analyticsService.trackInteraction(id, category, 'click', { title });
+    if (isTrending) {
+      analyticsService.trackInteraction(id, category, 'trend', { title });
+    }
+    if (onClick) onClick();
+  };
+
   return (
     <div
       className={cn(
         "article-card flex flex-col cursor-pointer animate-fade-in",
         className
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {image && (
         <div className="relative h-48 w-full overflow-hidden">

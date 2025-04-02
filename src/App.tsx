@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -21,6 +20,7 @@ import Africa from "@/pages/Africa";
 import Sports from "@/pages/Sports";
 import HistoryPage from "@/pages/History";
 import Trending from "@/pages/Trending";
+import Analytics from "@/pages/Analytics";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -57,6 +57,13 @@ const App = () => {
                     <Route path="/journals" element={<Dashboard />} />
                     <Route path="/conferences" element={<Dashboard />} />
                     
+                    {/* Admin analytics page */}
+                    <Route path="/analytics" element={
+                      <ProtectedRoute requiredRole="admin">
+                        <Analytics />
+                      </ProtectedRoute>
+                    } />
+
                     {/* Protected routes for both blogger and admin */}
                     <Route path="/blog/new" element={
                       <ProtectedRoute requiredRole="any">
