@@ -1,3 +1,4 @@
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -13,6 +14,12 @@ import {
   FilePlus,
   FileText,
   Menu,
+  Globe,
+  Flag,
+  History,
+  Sport,
+  TrendingUp,
+  Newspaper
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -71,28 +78,48 @@ export function Sidebar({ className }: { className?: string }) {
       href: "/search",
       icon: Search,
     },
+    {
+      name: "Trending",
+      href: "/trending",
+      icon: TrendingUp,
+    },
   ];
 
   const categoryNavItems = [
     {
-      name: "Medicine",
-      href: "/medicine",
-      icon: Pill,
+      name: "World News",
+      href: "/world-news",
+      icon: Globe,
     },
     {
-      name: "Biochemistry",
-      href: "/biochemistry",
+      name: "Africa",
+      href: "/africa",
+      icon: Flag,
+    },
+    {
+      name: "Sports",
+      href: "/sports",
+      icon: Sport,
+    },
+    {
+      name: "History",
+      href: "/history",
+      icon: History,
+    },
+    {
+      name: "Science",
+      href: "/science",
       icon: FlaskConical,
     },
     {
-      name: "Biology",
-      href: "/biology",
-      icon: Leaf,
+      name: "Health",
+      href: "/health",
+      icon: Pill,
     },
     {
-      name: "Clinical Research",
-      href: "/clinical-research",
-      icon: Thermometer,
+      name: "Technology",
+      href: "/technology",
+      icon: Leaf,
     },
     {
       name: "Journals",
@@ -125,9 +152,9 @@ export function Sidebar({ className }: { className?: string }) {
         <div className="flex h-full flex-col">
           <SidebarHeader className="border-b p-5 flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-semibold">MediScience Hub</h2>
+              <h2 className="text-xl font-semibold">Info Stream Africa</h2>
               <p className="text-xs text-muted-foreground">
-                Latest medical and scientific research
+                Latest news from Africa and around the world
               </p>
             </div>
             <SidebarTrigger className="ml-auto md:flex">

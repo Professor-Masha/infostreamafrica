@@ -16,6 +16,11 @@ import MyArticles from "@/pages/MyArticles";
 import Login from "@/pages/Login";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import WorldNews from "@/pages/WorldNews";
+import Africa from "@/pages/Africa";
+import Sports from "@/pages/Sports";
+import HistoryPage from "@/pages/History";
+import Trending from "@/pages/Trending";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -39,10 +44,16 @@ const App = () => {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/article/:id" element={<ArticleDetail />} />
-                    <Route path="/medicine" element={<Dashboard />} />
-                    <Route path="/biochemistry" element={<Dashboard />} />
-                    <Route path="/biology" element={<Dashboard />} />
-                    <Route path="/clinical-research" element={<Dashboard />} />
+                    <Route path="/trending" element={<Trending />} />
+                    
+                    {/* Category pages */}
+                    <Route path="/world-news" element={<WorldNews />} />
+                    <Route path="/africa" element={<Africa />} />
+                    <Route path="/sports" element={<Sports />} />
+                    <Route path="/history" element={<HistoryPage />} />
+                    <Route path="/science" element={<Dashboard />} />
+                    <Route path="/health" element={<Dashboard />} />
+                    <Route path="/technology" element={<Dashboard />} />
                     <Route path="/journals" element={<Dashboard />} />
                     <Route path="/conferences" element={<Dashboard />} />
                     
