@@ -17,7 +17,7 @@ import {
   Globe,
   Flag,
   History,
-  Sport,
+  Trophy,
   TrendingUp,
   Newspaper
 } from "lucide-react";
@@ -99,7 +99,7 @@ export function Sidebar({ className }: { className?: string }) {
     {
       name: "Sports",
       href: "/sports",
-      icon: Sport,
+      icon: Trophy,
     },
     {
       name: "History",

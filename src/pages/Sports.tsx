@@ -1,5 +1,5 @@
 
-import { Sport } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { CategoryPage } from "@/components/CategoryPage";
 
 // Mock data
@@ -97,7 +97,7 @@ export default function Sports() {
   return (
     <CategoryPage
       title="Sports"
-      icon={Sport}
+      icon={Trophy}
       articles={sportsArticles}
       trendingArticles={trendingSports}
     />
