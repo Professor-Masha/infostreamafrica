@@ -1,4 +1,3 @@
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -13,7 +12,7 @@ import {
   FileEdit,
   FilePlus,
   FileText,
-  PanelLeft,
+  Menu,
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -96,14 +95,18 @@ export function Sidebar({ className }: { className?: string }) {
 
   return (
     <>
-      <SidebarTrigger className="absolute left-4 top-4 z-50 md:hidden" />
       <UISidebar className={className}>
         <div className="flex h-full flex-col">
-          <SidebarHeader className="border-b p-5">
-            <h2 className="text-xl font-semibold">MediScience Hub</h2>
-            <p className="text-xs text-muted-foreground">
-              Latest medical and scientific research
-            </p>
+          <SidebarHeader className="border-b p-5 flex justify-between items-center">
+            <div>
+              <h2 className="text-xl font-semibold">MediScience Hub</h2>
+              <p className="text-xs text-muted-foreground">
+                Latest medical and scientific research
+              </p>
+            </div>
+            <SidebarTrigger className="ml-auto md:flex">
+              <Menu className="h-5 w-5" />
+            </SidebarTrigger>
           </SidebarHeader>
 
           <SidebarContent>
@@ -166,14 +169,12 @@ export function Sidebar({ className }: { className?: string }) {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-
-          <SidebarFooter>
-            <SidebarTrigger className="ml-auto mr-4 hidden md:flex">
-              <PanelLeft className="h-4 w-4" />
-            </SidebarTrigger>
-          </SidebarFooter>
         </div>
       </UISidebar>
+      
+      <SidebarTrigger className="absolute left-4 top-4 z-50 md:hidden">
+        <Menu className="h-5 w-5" />
+      </SidebarTrigger>
     </>
   );
 }
