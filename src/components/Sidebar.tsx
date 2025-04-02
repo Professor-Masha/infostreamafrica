@@ -28,11 +28,37 @@ import {
   SidebarTrigger,
   useSidebar
 } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 
 export function Sidebar({ className }: { className?: string }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { state } = useSidebar();
+  const { state, setOpen } = useSidebar();
+
+  useEffect(() => {
+    const handleHover = () => {
+      const group = document.querySelector('.group');
+      if (!group) return;
+
+      group.addEventListener('mouseenter', () => {
+        setOpen(true);
+      });
+
+      group.addEventListener('mouseleave', () => {
+        setOpen(false);
+      });
+    };
+
+    handleHover();
+    
+    return () => {
+      const group = document.querySelector('.group');
+      if (group) {
+        group.removeEventListener('mouseenter', () => setOpen(true));
+        group.removeEventListener('mouseleave', () => setOpen(false));
+      }
+    };
+  }, [setOpen]);
 
   const mainNavItems = [
     {
