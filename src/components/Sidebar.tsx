@@ -13,11 +13,27 @@ import {
   FileEdit,
   FilePlus,
   FileText,
+  PanelLeft,
 } from "lucide-react";
+import { 
+  Sidebar as UISidebar, 
+  SidebarContent, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarTrigger,
+  useSidebar
+} from "@/components/ui/sidebar";
 
 export function Sidebar({ className }: { className?: string }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { state } = useSidebar();
 
   const mainNavItems = [
     {
@@ -79,90 +95,85 @@ export function Sidebar({ className }: { className?: string }) {
   ];
 
   return (
-    <aside
-      className={cn(
-        "fixed inset-y-0 left-0 z-20 hidden w-64 flex-col border-r bg-background pb-10 sm:flex",
-        className
-      )}
-    >
-      <div className="border-b px-6 py-5">
-        <h2 className="text-xl font-semibold">MediScience Hub</h2>
-        <p className="text-xs text-muted-foreground">
-          Latest medical and scientific research
-        </p>
-      </div>
+    <>
+      <SidebarTrigger className="absolute left-4 top-4 z-50 md:hidden" />
+      <UISidebar className={className}>
+        <div className="flex h-full flex-col">
+          <SidebarHeader className="border-b p-5">
+            <h2 className="text-xl font-semibold">MediScience Hub</h2>
+            <p className="text-xs text-muted-foreground">
+              Latest medical and scientific research
+            </p>
+          </SidebarHeader>
 
-      <div className="flex flex-1 flex-col gap-6 px-3 py-4">
-        <nav className="flex flex-col gap-1">
-          {mainNavItems.map((item) => (
-            <NavItem
-              key={item.href}
-              item={item}
-              isActive={location.pathname === item.href}
-              onClick={() => navigate(item.href)}
-            />
-          ))}
-        </nav>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {mainNavItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        isActive={location.pathname === item.href}
+                        onClick={() => navigate(item.href)}
+                        tooltip={state === "collapsed" ? item.name : undefined}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
 
-        <div>
-          <h3 className="mb-2 px-3 text-xs font-semibold text-muted-foreground">
-            Categories
-          </h3>
-          <nav className="flex flex-col gap-1">
-            {categoryNavItems.map((item) => (
-              <NavItem
-                key={item.href}
-                item={item}
-                isActive={location.pathname === item.href}
-                onClick={() => navigate(item.href)}
-              />
-            ))}
-          </nav>
+            <SidebarGroup>
+              <SidebarGroupLabel>Categories</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {categoryNavItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        isActive={location.pathname === item.href}
+                        onClick={() => navigate(item.href)}
+                        tooltip={state === "collapsed" ? item.name : undefined}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Blog Writing</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {blogNavItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        isActive={location.pathname === item.href}
+                        onClick={() => navigate(item.href)}
+                        tooltip={state === "collapsed" ? item.name : undefined}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+
+          <SidebarFooter>
+            <SidebarTrigger className="ml-auto mr-4 hidden md:flex">
+              <PanelLeft className="h-4 w-4" />
+            </SidebarTrigger>
+          </SidebarFooter>
         </div>
-
-        <div>
-          <h3 className="mb-2 px-3 text-xs font-semibold text-muted-foreground">
-            Blog Writing
-          </h3>
-          <nav className="flex flex-col gap-1">
-            {blogNavItems.map((item) => (
-              <NavItem
-                key={item.href}
-                item={item}
-                isActive={location.pathname === item.href}
-                onClick={() => navigate(item.href)}
-              />
-            ))}
-          </nav>
-        </div>
-      </div>
-    </aside>
-  );
-}
-
-function NavItem({
-  item,
-  isActive,
-  onClick,
-}: {
-  item: { name: string; icon: any };
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  const Icon = item.icon;
-
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium",
-        isActive
-          ? "bg-accent text-accent-foreground"
-          : "text-foreground/70 hover:bg-muted hover:text-foreground"
-      )}
-    >
-      <Icon className="h-4 w-4" />
-      {item.name}
-    </button>
+      </UISidebar>
+    </>
   );
 }
