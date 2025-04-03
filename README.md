@@ -10,7 +10,6 @@
 - Latest news and updates from across Africa
 - Categorized content (Health, Science, Technology, etc.)
 - YouTube integration for video content
-- Google Sign-In authentication
 - User authentication and profiles
 - Responsive design for all devices
 
@@ -23,14 +22,6 @@ The application uses the YouTube Data API v3 to fetch and display videos from th
 - Displaying trending videos based on view count
 - Video playback functionality
 - Channel information display
-
-### Google Identity API
-The application uses Google Identity API for authentication and user management:
-
-- Single sign-on with Google credentials
-- Auto-login for returning users
-- Secure user authentication
-- User profile data synchronization
 
 ## How can I edit this code?
 
@@ -88,17 +79,6 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 - YouTube Data API v3
-- Google Identity API
-
-## Responsive Design
-
-The application is fully responsive and optimized for both mobile and desktop experiences:
-
-- Mobile-friendly sidebar with hamburger menu
-- Adaptive search bar that collapses on smaller screens
-- Touch-friendly UI elements
-- Properly sized buttons and interactive elements
-- Consistent typography and spacing across devices
 
 ## How can I deploy this project?
 
