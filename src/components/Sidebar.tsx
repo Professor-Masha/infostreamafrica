@@ -19,7 +19,7 @@ import {
   Newspaper,
   BarChart,
   Video,
-  YouTube
+  Play
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -91,7 +91,7 @@ export function Sidebar({ className }: { className?: string }) {
     {
       name: "YouTube Channel",
       href: "/youtube",
-      icon: YouTube,
+      icon: Play,
     },
     {
       name: "Videos",
