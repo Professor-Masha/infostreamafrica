@@ -4,7 +4,7 @@ import { youtubeService, YouTubeVideo } from '@/services/youtubeService';
 import { VideoPlayer } from '@/components/VideoPlayer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink, YouTube as YouTubeIcon } from 'lucide-react';
+import { ExternalLink, Play as YouTubeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function YouTube() {
