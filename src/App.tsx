@@ -23,6 +23,11 @@ import Analytics from "@/pages/Analytics";
 import YouTube from "@/pages/YouTube";
 import Videos from "@/pages/Videos";
 import UserProfile from "@/pages/UserProfile";
+import Science from "@/pages/Science";
+import Health from "@/pages/Health";
+import Technology from "@/pages/Technology";
+import Journals from "@/pages/Journals";
+import Conferences from "@/pages/Conferences";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -63,11 +68,11 @@ const App = () => {
                   <Route path="/africa" element={<Africa />} />
                   <Route path="/sports" element={<Sports />} />
                   <Route path="/history" element={<HistoryPage />} />
-                  <Route path="/science" element={<Dashboard />} />
-                  <Route path="/health" element={<Dashboard />} />
-                  <Route path="/technology" element={<Dashboard />} />
-                  <Route path="/journals" element={<Dashboard />} />
-                  <Route path="/conferences" element={<Dashboard />} />
+                  <Route path="/science" element={<Science />} />
+                  <Route path="/health" element={<Health />} />
+                  <Route path="/technology" element={<Technology />} />
+                  <Route path="/journals" element={<Journals />} />
+                  <Route path="/conferences" element={<Conferences />} />
                   
                   {/* User profile page */}
                   <Route path="/profile" element={

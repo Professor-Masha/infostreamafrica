@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requiredRole = 'any' }: ProtectedRouteProps) {
-  const { isAuthenticated, isAdmin, isBlogger } = useAuth();
+  const { isAuthenticated, isAdmin, user } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -17,11 +17,11 @@ export function ProtectedRoute({ children, requiredRole = 'any' }: ProtectedRout
 
   // Role-based access control
   if (requiredRole === 'admin' && !isAdmin) {
-    return <Navigate to="/my-articles" replace />;
+    return <Navigate to="/" replace />;
   }
 
-  if (requiredRole === 'blogger' && !isBlogger && !isAdmin) {
-    return <Navigate to="/my-articles" replace />;
+  if (requiredRole === 'blogger' && !isAdmin && user?.role !== 'blogger') {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

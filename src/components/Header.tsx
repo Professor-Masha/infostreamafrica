@@ -1,9 +1,9 @@
 
-import { Bell, User, LogOut, UserCircle } from "lucide-react";
+import { Bell, User, LogOut, UserCircle, Shield, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SearchBar } from "@/components/SearchBar";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -33,7 +33,14 @@ export function Header() {
       <div className="flex flex-1 items-center gap-4 md:gap-6">
         <SearchBar onSearch={handleSearch} />
       </div>
-      <div className="flex items-center gap-2">
+      
+      <div className="flex-1 flex justify-center">
+        <Link to="/" className="text-2xl font-bold hover:text-primary transition-colors">
+          Info Stream Africa
+        </Link>
+      </div>
+      
+      <div className="flex items-center gap-2 flex-1 justify-end">
         <Button variant="ghost" size="icon">
           <Bell className="h-5 w-5" />
         </Button>
@@ -57,6 +64,10 @@ export function Header() {
               <DropdownMenuItem onClick={() => navigate('/profile')}>
                 <UserCircle className="mr-2 h-4 w-4" />
                 <span>My Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/profile?tab=privacy')}>
+                <Shield className="mr-2 h-4 w-4" />
+                <span>Privacy Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
