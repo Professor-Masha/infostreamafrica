@@ -67,9 +67,13 @@ export function VideoPlayer({ videoId, title, autoPlay = false, onPlay }: VideoP
         <div className="relative">
           {/* Video thumbnail with play button overlay */}
           <img 
-            src={`https://via.placeholder.com/1280x720.png?text=${encodeURIComponent(title)}`} 
+            src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} 
             alt={title}
             className="w-full aspect-video object-cover"
+            onError={(e) => {
+              // Fallback if maxresdefault isn't available
+              (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            }}
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <Button 
@@ -82,7 +86,7 @@ export function VideoPlayer({ videoId, title, autoPlay = false, onPlay }: VideoP
         </div>
       ) : (
         <div className="relative">
-          {/* This would be a real YouTube embed in production */}
+          {/* Real YouTube embed */}
           <div className="aspect-video bg-black flex items-center justify-center">
             <iframe 
               width="100%" 

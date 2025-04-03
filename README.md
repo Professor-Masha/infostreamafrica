@@ -1,8 +1,27 @@
-# Welcome to your Lovable project
+
+# InfoStream Africa News Platform
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/c66e162b-a4e4-411e-aeff-928305f658c0
+
+## Features
+
+- Latest news and updates from across Africa
+- Categorized content (Health, Science, Technology, etc.)
+- YouTube integration for video content
+- User authentication and profiles
+- Responsive design for all devices
+
+## API Integrations
+
+### YouTube Data API v3
+The application uses the YouTube Data API v3 to fetch and display videos from the InfoStream Africa YouTube channel. The integration includes:
+
+- Fetching latest videos from the channel
+- Displaying trending videos based on view count
+- Video playback functionality
+- Channel information display
 
 ## How can I edit this code?
 
@@ -52,13 +71,14 @@ npm run dev
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+- YouTube Data API v3
 
 ## How can I deploy this project?
 
