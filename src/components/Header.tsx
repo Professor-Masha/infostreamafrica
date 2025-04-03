@@ -1,9 +1,9 @@
 
-import { Bell, User, LogOut } from "lucide-react";
+import { Bell, User, LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SearchBar } from "@/components/SearchBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
 
 export function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
   const handleSearch = (query: string) => {
@@ -53,11 +54,9 @@ export function Header() {
                 {user?.username} ({user?.role})
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/my-articles')}>
-                My Articles
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/blog/new')}>
-                Write New Article
+              <DropdownMenuItem onClick={() => navigate('/profile')}>
+                <UserCircle className="mr-2 h-4 w-4" />
+                <span>My Profile</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>

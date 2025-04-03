@@ -22,6 +22,7 @@ import Trending from "@/pages/Trending";
 import Analytics from "@/pages/Analytics";
 import YouTube from "@/pages/YouTube";
 import Videos from "@/pages/Videos";
+import UserProfile from "@/pages/UserProfile";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -67,6 +68,13 @@ const App = () => {
                   <Route path="/technology" element={<Dashboard />} />
                   <Route path="/journals" element={<Dashboard />} />
                   <Route path="/conferences" element={<Dashboard />} />
+                  
+                  {/* User profile page */}
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  } />
                   
                   {/* Admin analytics page */}
                   <Route path="/analytics" element={

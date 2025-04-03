@@ -5,6 +5,8 @@ interface User {
   username: string;
   role: 'admin' | 'user';
   email?: string;
+  fullName?: string;
+  avatar?: string;
 }
 
 interface AuthContextType {
@@ -16,6 +18,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Set secure cookie options
+const SECURE_COOKIE_OPTIONS = {
+  secure: true,         // Only sent over HTTPS
+  httpOnly: true,       // Not accessible via JavaScript
+  sameSite: 'strict',   // Only sent to the same site
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -36,11 +46,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    
+    // In a production environment, you would set an HttpOnly cookie here
+    // This would require a server-side endpoint
+    // Example: document.cookie = `auth_token=${token}; ${serializeCookieOptions(SECURE_COOKIE_OPTIONS)}`;
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    
+    // In a production environment, you would clear the HttpOnly cookie here
+    // Example: document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   };
 
   const isAdmin = user?.role === 'admin';
