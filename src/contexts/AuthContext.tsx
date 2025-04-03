@@ -3,14 +3,13 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 interface User {
   username: string;
-  role: 'admin' | 'blogger';
+  role: 'admin' | 'user';
   email?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
-  isBlogger: boolean;
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
@@ -45,14 +44,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const isAdmin = user?.role === 'admin';
-  const isBlogger = user?.role === 'blogger';
   const isAuthenticated = user !== null;
 
   return (
     <AuthContext.Provider value={{ 
       user, 
-      isAdmin, 
-      isBlogger, 
+      isAdmin,
       isAuthenticated, 
       login, 
       logout 

@@ -7,14 +7,14 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
-import { Mail, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
-// Mock users with roles
+// Mock users
 const USERS = [
   { username: 'admin', password: 'admin123', role: 'admin', email: 'admin@example.com' },
-  { username: 'blogger1', password: 'blog123', role: 'blogger', email: 'blogger1@example.com' },
-  { username: 'blogger2', password: 'blog123', role: 'blogger', email: 'blogger2@example.com' },
+  { username: 'user1', password: 'user123', role: 'user', email: 'user1@example.com' },
+  { username: 'user2', password: 'user123', role: 'user', email: 'user2@example.com' },
 ];
 
 interface LoginFormProps {
@@ -43,7 +43,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
       if (user) {
         login({
           username: user.username,
-          role: user.role as 'admin' | 'blogger'
+          role: user.role as any
         });
 
         toast({
@@ -52,7 +52,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
         });
 
         // Redirect to appropriate page
-        navigate('/my-articles');
+        navigate('/');
       } else {
         toast({
           title: "Login failed",
@@ -69,13 +69,13 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
     
     // Simulate Google authentication
     setTimeout(() => {
-      // For demo, we're using the blogger1 account
-      const user = USERS.find(u => u.username === 'blogger1');
+      // For demo, we're using the user1 account
+      const user = USERS.find(u => u.username === 'user1');
       
       if (user) {
         login({
           username: user.username,
-          role: user.role as 'admin' | 'blogger'
+          role: user.role as any
         });
 
         toast({
@@ -83,7 +83,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
           description: `Welcome, ${user.username}!`,
         });
 
-        navigate('/my-articles');
+        navigate('/');
       }
       
       setIsLoading(false);
@@ -93,16 +93,15 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Login to Info Stream Africa</CardTitle>
         <CardDescription>
-          Sign in to access the blogging platform
+          Access the latest news and videos from Africa
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <Button 
-            variant="outline" 
-            className="w-full" 
+            className="w-full bg-red-600 hover:bg-red-700" 
             onClick={handleGoogleLogin} 
             disabled={isLoading}
           >
@@ -112,7 +111,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
               <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
               <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
             </svg>
-            Login with Google
+            Sign in with Google
           </Button>
 
           <div className="relative">
@@ -121,7 +120,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                Or continue with email
               </span>
             </div>
           </div>
@@ -129,10 +128,10 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
           <form onSubmit={handleLogin}>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email or Username</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
-                  placeholder="Enter your email or username"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -165,9 +164,9 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
           </p>
         </div>
         <div className="text-sm text-muted-foreground">
-          <p className="text-center">Use these demo accounts:</p>
+          <p className="text-center">Demo accounts:</p>
           <p className="text-center">Admin: admin / admin123</p>
-          <p className="text-center">Blogger: blogger1 / blog123</p>
+          <p className="text-center">User: user1 / user123</p>
         </div>
       </CardFooter>
     </Card>

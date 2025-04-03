@@ -11,8 +11,6 @@ import Dashboard from "@/pages/Dashboard";
 import Search from "@/pages/Search";
 import ArticleDetail from "@/pages/ArticleDetail";
 import NotFound from "@/pages/NotFound";
-import BlogEditor from "@/pages/BlogEditor";
-import MyArticles from "@/pages/MyArticles";
 import Login from "@/pages/Login";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -22,6 +20,8 @@ import Sports from "@/pages/Sports";
 import HistoryPage from "@/pages/History";
 import Trending from "@/pages/Trending";
 import Analytics from "@/pages/Analytics";
+import YouTube from "@/pages/YouTube";
+import Videos from "@/pages/Videos";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -53,6 +53,10 @@ const App = () => {
                   <Route path="/article/:id" element={<ArticleDetail />} />
                   <Route path="/trending" element={<Trending />} />
                   
+                  {/* YouTube and Videos pages */}
+                  <Route path="/youtube" element={<YouTube />} />
+                  <Route path="/videos" element={<Videos />} />
+                  
                   {/* Category pages */}
                   <Route path="/world-news" element={<WorldNews />} />
                   <Route path="/africa" element={<Africa />} />
@@ -68,23 +72,6 @@ const App = () => {
                   <Route path="/analytics" element={
                     <ProtectedRoute requiredRole="admin">
                       <Analytics />
-                    </ProtectedRoute>
-                  } />
-
-                  {/* Protected routes for both blogger and admin */}
-                  <Route path="/blog/new" element={
-                    <ProtectedRoute requiredRole="any">
-                      <BlogEditor />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/blog/edit/:id" element={
-                    <ProtectedRoute requiredRole="any">
-                      <BlogEditor />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/my-articles" element={
-                    <ProtectedRoute requiredRole="any">
-                      <MyArticles />
                     </ProtectedRoute>
                   } />
                 </Route>

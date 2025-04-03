@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface RegisterFormProps {
@@ -19,7 +18,6 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('blogger');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -33,16 +31,16 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
       // Simulate successful registration
       toast({
         title: "Google registration successful",
-        description: "Your account has been created as a blogger",
+        description: "Your account has been created",
       });
       
       // Automatically login the new user
       login({
         username: 'New Google User',
-        role: 'blogger'
+        role: 'user'
       });
       
-      navigate('/my-articles');
+      navigate('/');
       setIsLoading(false);
     }, 1500);
   };
@@ -67,16 +65,16 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
       // Simulate successful registration
       toast({
         title: "Registration successful",
-        description: `Your account has been created as a ${role}`,
+        description: "Your account has been created",
       });
       
       // Automatically login the new user
       login({
         username: username,
-        role: role as 'admin' | 'blogger'
+        role: 'user'
       });
       
-      navigate('/my-articles');
+      navigate('/');
       setIsLoading(false);
     }, 1000);
   };
@@ -86,14 +84,13 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
       <CardHeader>
         <CardTitle>Create Account</CardTitle>
         <CardDescription>
-          Register to access the blogging platform
+          Register to access Info Stream Africa
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <Button 
-            variant="outline" 
-            className="w-full" 
+            className="w-full bg-red-600 hover:bg-red-700" 
             onClick={handleGoogleRegister} 
             disabled={isLoading}
           >
@@ -112,7 +109,7 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                Or register with email
               </span>
             </div>
           </div>
@@ -139,24 +136,6 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="role">Role</Label>
-                <Select 
-                  value={role} 
-                  onValueChange={setRole}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="blogger">Blogger</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  Note: In a real app, admin role would require approval.
-                </p>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>

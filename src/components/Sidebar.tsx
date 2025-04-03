@@ -1,3 +1,4 @@
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
@@ -9,9 +10,6 @@ import {
   Search,
   Home,
   Calendar,
-  FileEdit,
-  FilePlus,
-  FileText,
   Menu,
   Globe,
   Flag,
@@ -19,7 +17,9 @@ import {
   Trophy,
   TrendingUp,
   Newspaper,
-  BarChart
+  BarChart,
+  Video,
+  YouTube
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -87,6 +87,19 @@ export function Sidebar({ className }: { className?: string }) {
     },
   ];
 
+  const mediaNavItems = [
+    {
+      name: "YouTube Channel",
+      href: "/youtube",
+      icon: YouTube,
+    },
+    {
+      name: "Videos",
+      href: "/videos",
+      icon: Video,
+    },
+  ];
+
   const categoryNavItems = [
     {
       name: "World News",
@@ -135,19 +148,6 @@ export function Sidebar({ className }: { className?: string }) {
     },
   ];
 
-  const blogNavItems = [
-    {
-      name: "My Articles",
-      href: "/my-articles",
-      icon: FileText,
-    },
-    {
-      name: "Write New Article",
-      href: "/blog/new",
-      icon: FilePlus,
-    },
-  ];
-
   const adminNavItems = [
     {
       name: "Analytics",
@@ -193,10 +193,10 @@ export function Sidebar({ className }: { className?: string }) {
             </SidebarGroup>
 
             <SidebarGroup>
-              <SidebarGroupLabel>Categories</SidebarGroupLabel>
+              <SidebarGroupLabel>Media</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {categoryNavItems.map((item) => (
+                  {mediaNavItems.map((item) => (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
                         isActive={location.pathname === item.href}
@@ -213,10 +213,10 @@ export function Sidebar({ className }: { className?: string }) {
             </SidebarGroup>
 
             <SidebarGroup>
-              <SidebarGroupLabel>Blog Writing</SidebarGroupLabel>
+              <SidebarGroupLabel>Categories</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {blogNavItems.map((item) => (
+                  {categoryNavItems.map((item) => (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
                         isActive={location.pathname === item.href}
