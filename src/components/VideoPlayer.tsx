@@ -20,7 +20,7 @@ export function VideoPlayer({ videoId, title, autoPlay = false, onPlay }: VideoP
   // Track video play in analytics
   useEffect(() => {
     if (isPlaying) {
-      analyticsService.trackInteraction(videoId, 'video', 'play', { title });
+      analyticsService.trackInteraction(videoId, 'video', 'view', { title });
       onPlay?.();
     }
   }, [isPlaying, videoId, title, onPlay]);

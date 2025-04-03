@@ -13,6 +13,8 @@ const articles = [
     category: "Health",
     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: "2",
@@ -22,7 +24,9 @@ const articles = [
     author: "Dr. Michael Chen",
     category: "Health",
     image: "https://images.unsplash.com/photo-1584462280065-2ea0bea3ac3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: "3",
@@ -32,6 +36,9 @@ const articles = [
     author: "Nutritionist Rebecca Adams",
     category: "Health",
     image: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 

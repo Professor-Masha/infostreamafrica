@@ -13,6 +13,8 @@ const articles = [
     category: "Technology",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: "2",
@@ -22,7 +24,9 @@ const articles = [
     author: "Prof. Maria Rodriguez",
     category: "Technology",
     image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: "3",
@@ -32,6 +36,9 @@ const articles = [
     author: "Dr. Wei Dai",
     category: "Technology",
     image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 

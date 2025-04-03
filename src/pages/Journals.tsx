@@ -13,6 +13,8 @@ const articles = [
     category: "Journals",
     image: "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: "2",
@@ -22,7 +24,9 @@ const articles = [
     author: "International Medical Association",
     category: "Journals",
     image: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: "3",
@@ -32,6 +36,9 @@ const articles = [
     author: "Climate Research Network",
     category: "Journals",
     image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 

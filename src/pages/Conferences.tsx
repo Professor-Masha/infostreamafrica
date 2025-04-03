@@ -13,6 +13,8 @@ const articles = [
     category: "Conferences",
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: "2",
@@ -22,7 +24,9 @@ const articles = [
     author: "African Medical Association",
     category: "Conferences",
     image: "https://images.unsplash.com/photo-1503428593586-e225b39bddfe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: "3",
@@ -32,6 +36,9 @@ const articles = [
     author: "Education Africa Initiative",
     category: "Conferences",
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 

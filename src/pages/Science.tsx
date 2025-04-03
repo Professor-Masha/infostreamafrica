@@ -13,6 +13,8 @@ const articles = [
     category: "Science",
     image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: true,
+    isTrending: false,
+    isUpdated: false,
   },
   {
     id: "2",
@@ -22,7 +24,9 @@ const articles = [
     author: "Prof. Robert Johnson",
     category: "Science",
     image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
     isTrending: true,
+    isUpdated: false,
   },
   {
     id: "3",
@@ -32,6 +36,9 @@ const articles = [
     author: "Dr. Sarah Williams",
     category: "Science",
     image: "https://images.unsplash.com/photo-1636466497217-26a42372b966?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isNew: false,
+    isTrending: false,
+    isUpdated: false,
   },
 ];
 
