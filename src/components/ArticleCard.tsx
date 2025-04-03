@@ -34,19 +34,23 @@ export function ArticleCard({
 }: ArticleCardProps) {
   // Track that the article card was viewed
   useEffect(() => {
-    analyticsService.trackInteraction(id, category, 'view', { 
-      title, 
-      isNew, 
-      isTrending, 
-      isUpdated 
-    });
+    if (id) { // Add check to ensure id is defined
+      analyticsService.trackInteraction(id, category, 'view', { 
+        title, 
+        isNew, 
+        isTrending, 
+        isUpdated 
+      });
+    }
   }, [id, category, title, isNew, isTrending, isUpdated]);
 
   // Enhanced onClick handler to track clicks
   const handleClick = () => {
-    analyticsService.trackInteraction(id, category, 'click', { title });
-    if (isTrending) {
-      analyticsService.trackInteraction(id, category, 'trend', { title });
+    if (id) { // Add check to ensure id is defined
+      analyticsService.trackInteraction(id, category, 'click', { title });
+      if (isTrending) {
+        analyticsService.trackInteraction(id, category, 'trend', { title });
+      }
     }
     if (onClick) onClick();
   };

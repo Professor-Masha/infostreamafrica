@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
@@ -16,7 +17,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 // Mock data
 const featuredArticles = [
   {
-    id: 1,
+    id: "1",
     title: "New Breakthrough in mRNA Vaccine Technology",
     description: "Scientists have developed a new approach to mRNA vaccine delivery that could improve stability and effectiveness against emerging variants.",
     date: "May 15, 2023",
@@ -28,7 +29,7 @@ const featuredArticles = [
     isUpdated: false,
   },
   {
-    id: 2,
+    id: "2",
     title: "The Role of Gut Microbiome in Mental Health",
     description: "Recent research establishes stronger connections between gut bacteria composition and various mental health conditions, pointing to new treatment possibilities.",
     date: "May 10, 2023",
@@ -40,7 +41,7 @@ const featuredArticles = [
     isUpdated: false,
   },
   {
-    id: 3,
+    id: "3",
     title: "Advancements in CRISPR Gene Editing for Inherited Diseases",
     description: "Researchers report significant progress in using CRISPR-Cas9 technology to treat sickle cell disease and beta-thalassemia in human trials.",
     date: "May 8, 2023",
@@ -55,7 +56,7 @@ const featuredArticles = [
 
 const latestArticles = [
   {
-    id: 4,
+    id: "4",
     title: "AI-Powered Drug Discovery Platform Identifies Novel Antibiotics",
     description: "An artificial intelligence system has successfully identified a new class of antibiotics effective against drug-resistant bacteria.",
     date: "May 5, 2023",
@@ -67,7 +68,7 @@ const latestArticles = [
     isUpdated: false,
   },
   {
-    id: 5,
+    id: "5",
     title: "Understanding Long COVID: New Insights into Chronic Symptoms",
     description: "A comprehensive study reveals potential mechanisms behind persistent symptoms in COVID-19 survivors and suggests targeted treatment approaches.",
     date: "May 3, 2023",
@@ -79,7 +80,7 @@ const latestArticles = [
     isUpdated: false,
   },
   {
-    id: 6,
+    id: "6",
     title: "Biomarkers for Early Alzheimer's Detection in Blood Tests",
     description: "Scientists have identified specific blood biomarkers that may enable earlier and more accessible diagnosis of Alzheimer's disease.",
     date: "May 1, 2023",
@@ -104,7 +105,7 @@ const categories = [
 export default function Dashboard() {
   const navigate = useNavigate();
   
-  const handleArticleClick = (id: number) => {
+  const handleArticleClick = (id: string) => {
     navigate(`/article/${id}`);
   };
   
@@ -123,6 +124,7 @@ export default function Dashboard() {
           {featuredArticles.map((article) => (
             <ArticleCard
               key={article.id}
+              id={article.id}
               title={article.title}
               description={article.description}
               date={article.date}
@@ -160,6 +162,7 @@ export default function Dashboard() {
             {latestArticles.map((article) => (
               <ArticleCard
                 key={article.id}
+                id={article.id}
                 title={article.title}
                 description={article.description}
                 date={article.date}
