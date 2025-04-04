@@ -39,9 +39,9 @@ const SECURE_COOKIE_OPTIONS = {
 
 // Mock users
 const USERS = [
-  { username: 'admin', password: 'admin123', role: 'admin', email: 'admin@example.com' },
-  { username: 'user1', password: 'user123', role: 'user', email: 'user1@example.com' },
-  { username: 'user2', password: 'user123', role: 'user', email: 'user2@example.com' },
+  { username: 'admin', password: 'admin123', role: 'admin' as const, email: 'admin@example.com' },
+  { username: 'user1', password: 'user123', role: 'user' as const, email: 'user1@example.com' },
+  { username: 'user2', password: 'user123', role: 'user' as const, email: 'user2@example.com' },
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email: profile.email,
             fullName: profile.name,
             avatar: profile.picture,
-            role: 'user',
+            role: 'user' as const,
             googleId: profile.sub
           };
       

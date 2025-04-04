@@ -2,7 +2,7 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -17,6 +17,7 @@ export function SearchBar({
 }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ export function SearchBar({
       setIsExpanded(true);
       // Focus the input after expanding
       setTimeout(() => {
-        document.querySelector('input[name="query"]')?.focus();
+        inputRef.current?.focus();
       }, 100);
     } else if (query) {
       // If there's a query and we're expanded, submit the search
@@ -71,6 +72,7 @@ export function SearchBar({
             className="relative flex w-full animate-fade-in"
           >
             <Input
+              ref={inputRef}
               name="query"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
