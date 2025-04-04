@@ -12,14 +12,20 @@ export default function YouTube() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
+  const [channelInfo, setChannelInfo] = useState<any>(null);
 
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const latestVideos = await youtubeService.getLatestVideos(6);
+        const [latestVideos, channelData] = await Promise.all([
+          youtubeService.getLatestVideos(8), // Get more videos for the YouTube page
+          youtubeService.getChannelInfo()
+        ]);
+        
         setVideos(latestVideos);
         setSelectedVideo(latestVideos[0]); // Auto-select first video
+        setChannelInfo(channelData);
         setError(null);
       } catch (err) {
         console.error('Failed to fetch YouTube videos:', err);
@@ -29,24 +35,28 @@ export default function YouTube() {
       }
     };
 
-    fetchVideos();
+    fetchData();
   }, []);
 
   const handleVideoSelect = (video: YouTubeVideo) => {
     setSelectedVideo(video);
+    // Scroll to top when selecting a new video on mobile
+    if (window.innerWidth < 768) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-6 max-w-7xl">
+      <div className="container mx-auto py-6 max-w-7xl space-y-6">
         <div className="flex items-center gap-2 mb-6">
           <YouTubeIcon className="text-red-600" />
           <h1 className="text-3xl font-bold">InfoStream Africa YouTube Channel</h1>
         </div>
         <div className="grid grid-cols-1 gap-6">
           <Skeleton className="w-full aspect-video rounded-lg" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {[...Array(8)].map((_, i) => (
               <Skeleton key={i} className="w-full aspect-video rounded-lg" />
             ))}
           </div>
@@ -69,16 +79,20 @@ export default function YouTube() {
     );
   }
 
+  const channelUrl = channelInfo?.snippet?.customUrl
+    ? `https://www.youtube.com/${channelInfo.snippet.customUrl}`
+    : 'https://www.youtube.com/@InfoStreamAfrica';
+
   return (
     <div className="container mx-auto py-6 max-w-7xl">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center flex-wrap gap-4 mb-6">
         <div className="flex items-center gap-2">
           <YouTubeIcon className="text-red-600" />
           <h1 className="text-3xl font-bold">InfoStream Africa YouTube Channel</h1>
         </div>
         <Button variant="outline" asChild>
           <a 
-            href="https://www.youtube.com/@InfoStreamAfrica" 
+            href={channelUrl}
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-1"
@@ -106,8 +120,8 @@ export default function YouTube() {
         </div>
       )}
 
-      <h2 className="text-2xl font-semibold mb-4">Latest Videos</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <h2 className="text-2xl font-semibold mb-4">All Videos</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {videos.map((video) => (
           <Card 
             key={video.id} 

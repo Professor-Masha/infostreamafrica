@@ -41,11 +41,11 @@ export function SearchBar({
   };
 
   return (
-    <>
-      {/* Desktop search bar - always visible on larger screens */}
+    <div className="flex w-full max-w-3xl">
+      {/* Desktop search bar */}
       <form 
         onSubmit={handleSubmit} 
-        className="relative hidden md:flex w-full max-w-3xl"
+        className="relative hidden md:flex w-full"
       >
         <Input
           name="query"
@@ -64,8 +64,8 @@ export function SearchBar({
         </Button>
       </form>
 
-      {/* Mobile search bar - collapsed by default, expands on click */}
-      <div className="flex md:hidden items-center w-full max-w-xs">
+      {/* Mobile search bar */}
+      <div className="flex md:hidden items-center w-full">
         {isExpanded ? (
           <form 
             onSubmit={handleSubmit} 
@@ -101,6 +101,6 @@ export function SearchBar({
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 }

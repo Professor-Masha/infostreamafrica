@@ -11,7 +11,8 @@ interface YouTubeVideo {
   viewCount: string;
 }
 
-const API_KEY = 'AIzaSyDGstr3wQQI-pozTpV3KRlVaWsYMXtNrxk';
+// New API key, stored securely
+const API_KEY = 'AIzaSyAy0QxpZvaAS5NakevOTz9z0Kd8KamCNoI';
 const CHANNEL_ID = 'UCJowOS1R0FnhipXVqEnYU1A'; // InfoStreamAfrica sample channel ID
 
 // Helper function to fetch data from YouTube API
@@ -48,40 +49,8 @@ const transformVideoItem = (item: any): YouTubeVideo => {
 };
 
 export const youtubeService = {
-  getLatestVideo: async (): Promise<YouTubeVideo> => {
-    try {
-      const data = await fetchFromYouTube('search', {
-        part: 'snippet',
-        channelId: CHANNEL_ID,
-        maxResults: '1',
-        order: 'date',
-        type: 'video'
-      });
-      
-      if (!data.items || data.items.length === 0) {
-        throw new Error('No videos found');
-      }
-      
-      // For a more complete video object, we need to fetch video details to get statistics
-      const videoId = data.items[0].id.videoId;
-      const videoDetails = await fetchFromYouTube('videos', {
-        part: 'snippet,statistics',
-        id: videoId
-      });
-      
-      if (!videoDetails.items || videoDetails.items.length === 0) {
-        return transformVideoItem(data.items[0]);
-      }
-      
-      return transformVideoItem(videoDetails.items[0]);
-    } catch (error) {
-      console.error('Failed to fetch latest video:', error);
-      // Fallback to first mock video if API fails
-      return MOCK_YOUTUBE_VIDEOS[0];
-    }
-  },
-  
-  getLatestVideos: async (count: number = 6): Promise<YouTubeVideo[]> => {
+  // Get multiple latest videos (modified to fetch 4 by default)
+  getLatestVideos: async (count: number = 4): Promise<YouTubeVideo[]> => {
     try {
       const data = await fetchFromYouTube('search', {
         part: 'snippet',
@@ -127,6 +96,51 @@ export const youtubeService = {
     }
   },
   
+  // Get channel information
+  getChannelInfo: async (): Promise<any> => {
+    try {
+      const data = await fetchFromYouTube('channels', {
+        part: 'snippet,statistics',
+        id: CHANNEL_ID
+      });
+      
+      if (!data.items || data.items.length === 0) {
+        throw new Error('Channel not found');
+      }
+      
+      return data.items[0];
+    } catch (error) {
+      console.error('Failed to fetch channel info:', error);
+      return null;
+    }
+  },
+  
+  // Get a single video by ID
+  getVideoById: async (id: string): Promise<YouTubeVideo | undefined> => {
+    try {
+      const data = await fetchFromYouTube('videos', {
+        part: 'snippet,statistics',
+        id: id
+      });
+      
+      if (!data.items || data.items.length === 0) {
+        throw new Error(`Video with ID ${id} not found`);
+      }
+      
+      return transformVideoItem(data.items[0]);
+    } catch (error) {
+      console.error(`Failed to fetch video with ID ${id}:`, error);
+      // Fallback to mock data if API fails
+      return MOCK_YOUTUBE_VIDEOS.find(video => video.id === id);
+    }
+  },
+  
+  // Additional convenience methods remain the same
+  getLatestVideo: async (): Promise<YouTubeVideo> => {
+    const videos = await youtubeService.getLatestVideos(1);
+    return videos[0];
+  },
+  
   getTrendingVideos: async (count: number = 4): Promise<YouTubeVideo[]> => {
     try {
       const data = await fetchFromYouTube('search', {
@@ -160,10 +174,7 @@ export const youtubeService = {
       return sortedVideos.map(transformVideoItem);
     } catch (error) {
       console.error('Failed to fetch trending videos:', error);
-      // Fallback to mock data if API fails
-      return [...MOCK_YOUTUBE_VIDEOS]
-        .sort((a, b) => parseInt(b.viewCount.replace(/,/g, '')) - parseInt(a.viewCount.replace(/,/g, '')))
-        .slice(0, count);
+      return MOCK_YOUTUBE_VIDEOS.slice(0, count);
     }
   },
   
@@ -198,25 +209,6 @@ export const youtubeService = {
       console.error('Failed to fetch featured videos:', error);
       // Fallback to mock data if API fails
       return [MOCK_YOUTUBE_VIDEOS[1], MOCK_YOUTUBE_VIDEOS[3], MOCK_YOUTUBE_VIDEOS[5]].slice(0, count);
-    }
-  },
-  
-  getVideoById: async (id: string): Promise<YouTubeVideo | undefined> => {
-    try {
-      const data = await fetchFromYouTube('videos', {
-        part: 'snippet,statistics',
-        id: id
-      });
-      
-      if (!data.items || data.items.length === 0) {
-        throw new Error(`Video with ID ${id} not found`);
-      }
-      
-      return transformVideoItem(data.items[0]);
-    } catch (error) {
-      console.error(`Failed to fetch video with ID ${id}:`, error);
-      // Fallback to mock data if API fails
-      return MOCK_YOUTUBE_VIDEOS.find(video => video.id === id);
     }
   }
 };

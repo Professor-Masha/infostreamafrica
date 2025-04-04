@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useEffect } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Layout() {
   // Handle resizing for responsive behavior
@@ -35,6 +36,7 @@ export function Layout() {
             <Footer />
           </div>
         </div>
+        <ThemeToggle />
       </div>
     </SidebarProvider>
   );

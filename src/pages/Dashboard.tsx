@@ -93,7 +93,7 @@ export default function Dashboard() {
         ))}
       </div>
       
-      {/* Latest YouTube Video Section */}
+      {/* Latest YouTube Videos Section */}
       <LatestYouTubeVideo />
     </div>
   );
