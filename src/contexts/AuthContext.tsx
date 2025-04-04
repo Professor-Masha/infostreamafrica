@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   username: string;
@@ -7,6 +8,14 @@ interface User {
   email?: string;
   fullName?: string;
   avatar?: string;
+  googleId?: string;
+}
+
+interface GoogleProfile {
+  email: string;
+  name: string;
+  picture: string;
+  sub: string;
 }
 
 interface AuthContextType {
@@ -14,6 +23,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isAuthenticated: boolean;
   login: (user: User) => void;
+  googleLogin: (credential: string) => void;
   logout: () => void;
 }
 
@@ -26,6 +36,13 @@ const SECURE_COOKIE_OPTIONS = {
   sameSite: 'strict',   // Only sent to the same site
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
+
+// Mock users
+const USERS = [
+  { username: 'admin', password: 'admin123', role: 'admin', email: 'admin@example.com' },
+  { username: 'user1', password: 'user123', role: 'user', email: 'user1@example.com' },
+  { username: 'user2', password: 'user123', role: 'user', email: 'user2@example.com' },
+];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -52,6 +69,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Example: document.cookie = `auth_token=${token}; ${serializeCookieOptions(SECURE_COOKIE_OPTIONS)}`;
   };
 
+  const googleLogin = (credential: string) => {
+    try {
+      // Decode JWT token
+      const profile = jwtDecode(credential) as GoogleProfile;
+      
+      // Find if user already exists by email
+      const existingUser = USERS.find(u => u.email === profile.email);
+      
+      // Create or update user
+      const userData: User = existingUser 
+        ? { 
+            ...existingUser, 
+            googleId: profile.sub,
+            avatar: profile.picture,
+            fullName: profile.name
+          }
+        : {
+            username: profile.name.replace(/\s+/g, '').toLowerCase(),
+            email: profile.email,
+            fullName: profile.name,
+            avatar: profile.picture,
+            role: 'user',
+            googleId: profile.sub
+          };
+      
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // In production, send credential to backend for verification
+      // Example: await fetch('/api/auth/google', {method: 'POST', body: JSON.stringify({credential})})
+    } catch (error) {
+      console.error('Failed to process Google login', error);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -69,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin,
       isAuthenticated, 
       login, 
+      googleLogin,
       logout 
     }}>
       {children}
