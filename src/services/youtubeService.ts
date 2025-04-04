@@ -132,4 +132,4 @@ export const youtubeService = {
   }
 };
 
-export type { YouTubeVideo };
+// Remove the duplicate export to fix the TypeScript error
