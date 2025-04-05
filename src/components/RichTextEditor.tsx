@@ -44,7 +44,7 @@ export function RichTextEditor({
   };
 
   // Execute command on the editor
-  const execCommand = (command: string, value?: string | boolean) => {
+  const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
     handleContentChange();
     editorRef.current?.focus();
@@ -318,15 +318,17 @@ export function RichTextEditor({
           "prose-code:bg-muted prose-code:p-1 prose-code:rounded",
           "prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded",
           "prose-img:my-4 prose-img:rounded-md",
-          "[&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:my-4 [&_iframe]:rounded-md"
+          "[&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:my-4 [&_iframe]:rounded-md",
+          placeholder ? "empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400" : ""
         )}
-        placeholder={placeholder}
+        data-placeholder={placeholder}
         suppressContentEditableWarning
-      ></div>
+      />
       
-      <style jsx>{`
+      <style>
+        {`
         [contentEditable=true]:empty:before {
-          content: attr(placeholder);
+          content: attr(data-placeholder);
           color: gray;
           cursor: text;
         }
@@ -347,7 +349,8 @@ export function RichTextEditor({
           height: 100%;
           border-radius: 0.375rem;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 }
