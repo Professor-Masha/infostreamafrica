@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Save, FileCheck } from "lucide-react";
+import { Save, FileCheck, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArticleEditor } from "@/components/ArticleEditor";
@@ -19,6 +19,8 @@ const categories = [
   "Clinical Research", 
   "Journals", 
   "Conferences",
+  "Videos",
+  "YouTube",
   "Other"
 ];
 
@@ -30,6 +32,7 @@ const initialArticle: Article = {
   content: "",
   date: new Date().toISOString().split('T')[0],
   author: "",
+  authorFullName: "",
   category: "Medicine",
   status: "draft",
   tags: []
@@ -66,6 +69,7 @@ export default function BlogEditor() {
           content: "<p>This is the content of an existing article. It would be loaded from the server in a real application.</p>",
           date: new Date().toISOString().split('T')[0],
           author: user?.username || "Unknown",
+          authorFullName: "John Doe",
           category: "Medicine",
           status: "draft",
           tags: ["medicine", "research"]
@@ -86,6 +90,11 @@ export default function BlogEditor() {
   };
 
   const handleSave = (status: 'draft' | 'published') => {
+    // Don't change status if it's scheduled
+    if (article.status === 'scheduled' && status === 'draft') {
+      return;
+    }
+    
     setIsLoading(true);
     
     // Process tags from comma-separated string to array
@@ -93,7 +102,7 @@ export default function BlogEditor() {
     
     const updatedArticle = {
       ...article,
-      status,
+      status: article.status === 'scheduled' ? 'scheduled' : status,
       tags: tagsArray,
       // Update the date to current date
       date: new Date().toISOString().split('T')[0]
@@ -105,12 +114,21 @@ export default function BlogEditor() {
     // Simulate save delay
     setTimeout(() => {
       setIsLoading(false);
-      toast({
-        title: status === 'published' ? "Article published" : "Draft saved",
-        description: status === 'published' 
+      
+      let title = "";
+      let description = "";
+      
+      if (article.status === 'scheduled') {
+        title = "Scheduled article saved";
+        description = "Your article will be published automatically at the scheduled time.";
+      } else {
+        title = status === 'published' ? "Article published" : "Draft saved";
+        description = status === 'published' 
           ? "Your article has been published successfully." 
-          : "Your draft has been saved."
-      });
+          : "Your draft has been saved.";
+      }
+      
+      toast({ title, description });
       
       if (status === 'published') {
         // Navigate to the article page or a success page
@@ -127,15 +145,27 @@ export default function BlogEditor() {
             {id ? "Edit Article" : "Create New Article"}
           </h1>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => handleSave('draft')} 
-              disabled={isLoading}
-            >
-              <Save className="mr-2 h-4 w-4" />
-              Save Draft
-            </Button>
-            {isAdmin && (
+            {article.status === 'scheduled' ? (
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-1" 
+                disabled={isLoading}
+              >
+                <Calendar className="h-4 w-4" />
+                Scheduled
+              </Button>
+            ) : (
+              <Button 
+                variant="outline" 
+                onClick={() => handleSave('draft')} 
+                disabled={isLoading}
+              >
+                <Save className="mr-2 h-4 w-4" />
+                Save Draft
+              </Button>
+            )}
+            
+            {isAdmin && article.status !== 'scheduled' && (
               <Button 
                 onClick={() => handleSave('published')} 
                 disabled={isLoading}

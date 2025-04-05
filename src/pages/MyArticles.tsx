@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Edit, Trash2, Eye, Plus, FileText, Filter, Check, X } from "lucide-react";
+import { Edit, Trash2, Eye, Plus, FileText, Filter, Check, X, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -19,6 +19,7 @@ const mockArticles: Article[] = [
     content: "<p>This is a sample content for the article about medical research.</p>",
     date: "2023-05-20",
     author: "admin",
+    authorFullName: "Dr. Jane Smith",
     category: "Medicine",
     status: "published",
     tags: ["medicine", "research", "career"],
@@ -30,6 +31,7 @@ const mockArticles: Article[] = [
     content: "<p>This is a sample content about protein synthesis.</p>",
     date: "2023-05-15",
     author: "blogger1",
+    authorFullName: "Prof. Alex Johnson",
     category: "Biochemistry",
     status: "draft",
     tags: ["biochemistry", "proteins", "cellular biology"],
@@ -41,16 +43,30 @@ const mockArticles: Article[] = [
     content: "<p>This is sample content about CRISPR technology advancements.</p>",
     date: "2023-05-10",
     author: "blogger2",
+    authorFullName: "Dr. Michael Chen",
     category: "Biology",
     status: "published",
     tags: ["crispr", "gene editing", "biotechnology"],
+  },
+  {
+    id: "4",
+    title: "Introduction to COVID-19 Vaccines",
+    description: "Understanding how mRNA vaccines work.",
+    content: "<p>This is sample content about COVID-19 vaccine technology.</p>",
+    date: "2023-06-10",
+    author: "admin",
+    authorFullName: "Dr. Jane Smith",
+    category: "Medicine",
+    status: "scheduled",
+    scheduledDate: "2025-05-10T14:30:00.000Z",
+    tags: ["covid", "vaccines", "mrna"],
   },
 ];
 
 export default function MyArticles() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const [filter, setFilter] = useState<"all" | "published" | "draft" | "scheduled">("all");
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -155,7 +171,7 @@ export default function MyArticles() {
           <div className="w-full md:w-48">
             <Select 
               value={filter} 
-              onValueChange={(value: "all" | "published" | "draft") => setFilter(value)}
+              onValueChange={(value: "all" | "published" | "draft" | "scheduled") => setFilter(value)}
             >
               <SelectTrigger>
                 <Filter className="mr-2 h-4 w-4" />
@@ -165,6 +181,7 @@ export default function MyArticles() {
                 <SelectItem value="all">All Articles</SelectItem>
                 <SelectItem value="published">Published</SelectItem>
                 <SelectItem value="draft">Drafts</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -203,17 +220,27 @@ export default function MyArticles() {
                   <tr key={article.id} className="hover:bg-muted/50">
                     <td className="p-3">{article.title}</td>
                     {isAdmin && (
-                      <td className="p-3 hidden md:table-cell">{article.author}</td>
+                      <td className="p-3 hidden md:table-cell">{article.authorFullName || article.author}</td>
                     )}
                     <td className="p-3 hidden md:table-cell">{article.category}</td>
-                    <td className="p-3 hidden md:table-cell">{article.date}</td>
+                    <td className="p-3 hidden md:table-cell">
+                      {article.status === 'scheduled' && article.scheduledDate
+                        ? new Date(article.scheduledDate).toLocaleDateString()
+                        : article.date}
+                    </td>
                     <td className="p-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         article.status === 'published' 
                           ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
+                          : article.status === 'scheduled'
+                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
                           : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300'
                       }`}>
-                        {article.status === 'published' ? 'Published' : 'Draft'}
+                        {article.status === 'published' 
+                          ? 'Published' 
+                          : article.status === 'scheduled'
+                          ? 'Scheduled'
+                          : 'Draft'}
                       </span>
                     </td>
                     <td className="p-3 text-right">
@@ -246,6 +273,16 @@ export default function MyArticles() {
                             title="Unpublish article"
                           >
                             <X className="h-4 w-4 text-amber-600" />
+                          </Button>
+                        )}
+                        
+                        {article.status === 'scheduled' && (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            title="Scheduled for publication"
+                          >
+                            <Calendar className="h-4 w-4 text-blue-600" />
                           </Button>
                         )}
                         

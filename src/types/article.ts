@@ -6,12 +6,14 @@ export interface Article {
   content: string;
   date: string;
   author: string;
+  authorFullName?: string;
   category: string;
   image?: string;
   isNew?: boolean;
   isTrending?: boolean;
   isUpdated?: boolean;
   tags?: string[];
-  status: 'draft' | 'published';
+  status: 'draft' | 'published' | 'scheduled';
+  scheduledDate?: string;
   references?: string[];
 }

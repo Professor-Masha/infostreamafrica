@@ -13,7 +13,10 @@ import {
   MessageSquare,
   Bookmark,
   Bell,
-  Image
+  Image,
+  Calendar,
+  Video,
+  Youtube
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -37,7 +40,10 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
     { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
     { name: "Articles", path: "/admin/articles", icon: FileText, badge: 5 },
     { name: "Media", path: "/admin/media", icon: Image },
+    { name: "Videos", path: "/admin/videos", icon: Video },
+    { name: "YouTube", path: "/admin/youtube", icon: Youtube },
     { name: "Comments", path: "/admin/comments", icon: MessageSquare, badge: 12 },
+    { name: "Schedule", path: "/admin/schedule", icon: Calendar },
     { name: "Users", path: "/admin/users", icon: Users },
   ];
 
