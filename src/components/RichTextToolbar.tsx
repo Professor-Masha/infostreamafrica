@@ -1,4 +1,8 @@
 
+// This component is no longer needed as we've integrated the toolbar
+// directly into the RichTextEditor component.
+// It's being kept as a placeholder to avoid breaking references in other files.
+
 import React from 'react';
 import { Image, Link2, List, ListOrdered, Bold, Italic, Heading, Quote, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
