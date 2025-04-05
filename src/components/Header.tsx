@@ -1,5 +1,5 @@
 
-import { Bell, User, LogOut, UserCircle, Shield, Settings, Menu, X } from "lucide-react";
+import { Bell, User, LogOut, UserCircle, Shield, Settings, Menu, X, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SearchBar } from "@/components/SearchBar";
@@ -95,10 +95,16 @@ export function Header() {
                 <UserCircle className="mr-2 h-4 w-4" />
                 <span>My Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/profile?tab=privacy')}>
+              <DropdownMenuItem onClick={() => navigate('/my-articles')}>
                 <Shield className="mr-2 h-4 w-4" />
-                <span>Privacy Settings</span>
+                <span>My Articles</span>
               </DropdownMenuItem>
+              {isAdmin && (
+                <DropdownMenuItem onClick={() => navigate('/admin')}>
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  <span>Admin Portal</span>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
@@ -130,6 +136,11 @@ export function Header() {
               <Button variant="ghost" className="w-full justify-start" onClick={() => { navigate('/youtube'); toggleMobileMenu(); }}>
                 YouTube Channel
               </Button>
+              {isAdmin && (
+                <Button variant="ghost" className="w-full justify-start" onClick={() => { navigate('/admin'); toggleMobileMenu(); }}>
+                  Admin Portal
+                </Button>
+              )}
             </div>
             
             <div className="space-y-1">

@@ -29,6 +29,14 @@ import Health from "@/pages/Health";
 import Technology from "@/pages/Technology";
 import Journals from "@/pages/Journals";
 import Conferences from "@/pages/Conferences";
+import MyArticles from "@/pages/MyArticles";
+import BlogEditor from "@/pages/BlogEditor";
+import { AdminLayout } from "@/components/AdminLayout";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminArticles from "@/pages/admin/AdminArticles";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminAnalytics from "@/pages/admin/AdminAnalytics";
+import AdminSettings from "@/pages/admin/AdminSettings";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -57,6 +65,19 @@ const App = () => {
                   {/* Public login route */}
                   <Route path="/login" element={<Login />} />
                   
+                  {/* Admin routes with admin layout */}
+                  <Route element={
+                    <ProtectedRoute requiredRole="admin">
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/articles" element={<AdminArticles />} />
+                    <Route path="/admin/users" element={<AdminUsers />} />
+                    <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                    <Route path="/admin/settings" element={<AdminSettings />} />
+                  </Route>
+                  
                   {/* Public routes within layout */}
                   <Route element={<Layout />}>
                     <Route path="/" element={<Dashboard />} />
@@ -83,6 +104,25 @@ const App = () => {
                     <Route path="/profile" element={
                       <ProtectedRoute>
                         <UserProfile />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* My Articles page */}
+                    <Route path="/my-articles" element={
+                      <ProtectedRoute>
+                        <MyArticles />
+                      </ProtectedRoute>
+                    } />
+                    
+                    {/* Blog Editor routes */}
+                    <Route path="/blog/new" element={
+                      <ProtectedRoute>
+                        <BlogEditor />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/blog/edit/:id" element={
+                      <ProtectedRoute>
+                        <BlogEditor />
                       </ProtectedRoute>
                     } />
                     
