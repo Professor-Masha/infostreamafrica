@@ -20,12 +20,14 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { login, googleLogin } = useAuth();
 
   const handleGoogleSuccess = (credentialResponse: any) => {
     setIsLoading(true);
+    setGoogleError(null);
     
     if (credentialResponse.credential) {
       googleLogin(credentialResponse.credential);
@@ -48,9 +50,10 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
   };
 
   const handleGoogleError = () => {
+    setGoogleError("Google authentication is currently unavailable. Please use email registration instead.");
     toast({
-      title: "Google registration failed",
-      description: "An error occurred during Google authentication",
+      title: "Google registration unavailable",
+      description: "Please use email registration instead",
       variant: "destructive"
     });
   };
@@ -103,7 +106,7 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
-              auto_select={true}
+              auto_select={false}
               theme="filled_blue"
               shape="pill"
               size="large"
@@ -111,6 +114,12 @@ export function RegisterForm({ onLoginClick }: RegisterFormProps) {
               width="280px"
             />
           </div>
+
+          {googleError && (
+            <div className="p-3 text-sm bg-red-50 border border-red-200 rounded text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+              {googleError}
+            </div>
+          )}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

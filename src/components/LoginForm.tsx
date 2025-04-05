@@ -26,6 +26,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { login, googleLogin } = useAuth();
@@ -67,6 +68,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
 
   const handleGoogleSuccess = (credentialResponse: any) => {
     setIsLoading(true);
+    setGoogleError(null);
     
     if (credentialResponse.credential) {
       googleLogin(credentialResponse.credential);
@@ -89,9 +91,10 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
   };
 
   const handleGoogleError = () => {
+    setGoogleError("Google authentication is currently unavailable. Please use email login instead.");
     toast({
-      title: "Google login failed",
-      description: "An error occurred during Google authentication",
+      title: "Google login unavailable",
+      description: "Please use email login instead",
       variant: "destructive"
     });
   };
@@ -110,7 +113,7 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
-              auto_select={true}
+              auto_select={false}
               theme="filled_blue"
               shape="pill"
               size="large"
@@ -118,6 +121,12 @@ export function LoginForm({ onRegisterClick }: LoginFormProps) {
               width="280px"
             />
           </div>
+
+          {googleError && (
+            <div className="p-3 text-sm bg-red-50 border border-red-200 rounded text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+              {googleError}
+            </div>
+          )}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

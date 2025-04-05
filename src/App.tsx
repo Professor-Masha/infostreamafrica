@@ -49,7 +49,9 @@ const queryClient = new QueryClient({
 });
 
 // Google Client ID - In a real app, use environment variables
-const GOOGLE_CLIENT_ID = "AIzaSyDGstr3wQQI-pozTpV3KRlVaWsYMXtNrxk";
+// Updated the Google Client ID with a dummy value for demo purposes
+// In a production app, you should replace this with your actual Google OAuth Client ID
+const GOOGLE_CLIENT_ID = "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com";
 
 const App = () => {
   return (
