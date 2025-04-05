@@ -1,21 +1,17 @@
 
-import React from "react";
-import { Navigate, Outlet, Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { AdminSidebar } from "@/components/AdminSidebar";
 import {
-  BarChart3,
-  FileText,
-  LayoutDashboard,
+  Bell,
+  ChevronLeft,
   LogOut,
-  Settings,
-  Users,
   Menu,
-  X,
-  ChevronLeft
+  X
 } from "lucide-react";
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,113 +40,36 @@ export function AdminLayout() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const navItems = [
-    { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
-    { name: "Articles", path: "/admin/articles", icon: FileText },
-    { name: "Users", path: "/admin/users", icon: Users },
-    { name: "Analytics", path: "/admin/analytics", icon: BarChart3 },
-    { name: "Settings", path: "/admin/settings", icon: Settings },
-  ];
-
-  const activeRoute = (path: string) => {
-    return window.location.pathname === path;
-  };
-
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Admin Sidebar */}
-      <aside 
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } fixed inset-y-0 left-0 z-30 bg-slate-900 text-white transition-all duration-300 ease-in-out`}
-      >
-        <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b border-slate-800 p-4">
-            {sidebarOpen && (
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold">Admin Portal</span>
-              </div>
-            )}
-            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="text-white">
-              {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
-
-          <nav className="flex-1 space-y-1 p-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`flex items-center px-4 py-3 my-1 rounded-md transition-colors ${
-                  activeRoute(item.path)
-                    ? "bg-slate-800 text-white"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                }`}
-              >
-                <item.icon className="h-5 w-5 mr-3" />
-                {sidebarOpen && <span>{item.name}</span>}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="border-t border-slate-800 p-4">
-            {sidebarOpen ? (
-              <div className="flex items-center">
-                <Avatar className="h-8 w-8">
-                  {user?.avatar ? (
-                    <AvatarImage src={user.avatar} alt={user.username} />
-                  ) : (
-                    <AvatarFallback>
-                      {user?.username.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  )}
-                </Avatar>
-                <div className="ml-3">
-                  <p className="text-sm font-medium">{user?.username}</p>
-                  <p className="text-xs text-slate-400">Administrator</p>
-                </div>
-              </div>
-            ) : (
-              <Avatar className="h-8 w-8 mx-auto">
-                {user?.avatar ? (
-                  <AvatarImage src={user.avatar} alt={user.username} />
-                ) : (
-                  <AvatarFallback>
-                    {user?.username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                )}
-              </Avatar>
-            )}
-
-            <Button
-              variant="ghost"
-              size={sidebarOpen ? "default" : "icon"}
-              className="mt-4 w-full text-white hover:bg-slate-800"
-              onClick={handleLogout}
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              {sidebarOpen && "Logout"}
-            </Button>
-          </div>
-        </div>
-      </aside>
+    <div className="flex h-screen bg-background overflow-hidden">
+      {/* WordPress-like Admin Sidebar */}
+      <div className={`${sidebarOpen ? "block" : "hidden"} md:block`}>
+        <AdminSidebar collapsed={!sidebarOpen} />
+      </div>
 
       {/* Main content */}
-      <div className={`flex-1 transition-all duration-300 ease-in-out ${sidebarOpen ? "ml-64" : "ml-20"}`}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         <header className="sticky top-0 z-20 border-b bg-background px-4 py-3 flex items-center justify-between">
           <div className="flex items-center">
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
               onClick={toggleSidebar}
+              className="mr-2"
             >
-              <Menu className="h-5 w-5" />
+              {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
             <h1 className="text-xl font-bold">InfoStream Africa Admin</h1>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                3
+              </span>
+            </Button>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative rounded-full" size="icon">
@@ -187,7 +106,7 @@ export function AdminLayout() {
           </div>
         </header>
         
-        <main className="p-4 md:p-6">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <Outlet />
         </main>
       </div>

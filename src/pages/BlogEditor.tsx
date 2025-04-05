@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Save } from "lucide-react";
+import { Save, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArticleEditor } from "@/components/ArticleEditor";
@@ -44,6 +44,7 @@ export default function BlogEditor() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { user, isAdmin } = useAuth();
+  const [activeTab, setActiveTab] = useState<string>("editor");
 
   useEffect(() => {
     if (user) {
@@ -84,20 +85,6 @@ export default function BlogEditor() {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // In a real app, this would upload the file to a server and get back a URL
-      // For now, we'll just create a local object URL
-      const imageUrl = URL.createObjectURL(file);
-      setArticle(prev => ({ ...prev, image: imageUrl }));
-      toast({
-        title: "Image uploaded",
-        description: `${file.name} has been added to your article.`
-      });
-    }
-  };
-
   const handleSave = (status: 'draft' | 'published') => {
     setIsLoading(true);
     
@@ -134,7 +121,7 @@ export default function BlogEditor() {
 
   return (
     <ProtectedRoute requiredRole="any">
-      <div className="max-w-5xl mx-auto py-6">
+      <div className="max-w-5xl mx-auto py-6 px-4">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">
             {id ? "Edit Article" : "Create New Article"}
@@ -145,6 +132,7 @@ export default function BlogEditor() {
               onClick={() => handleSave('draft')} 
               disabled={isLoading}
             >
+              <Save className="mr-2 h-4 w-4" />
               Save Draft
             </Button>
             {isAdmin && (
@@ -152,19 +140,20 @@ export default function BlogEditor() {
                 onClick={() => handleSave('published')} 
                 disabled={isLoading}
               >
-                {isLoading ? "Saving..." : "Publish"}
+                <FileCheck className="mr-2 h-4 w-4" />
+                {isLoading ? "Publishing..." : "Publish"}
               </Button>
             )}
           </div>
         </div>
 
-        <Tabs defaultValue="editor" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="preview">Preview</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="editor">
+          <TabsContent value="editor" className="mt-6">
             <ArticleEditor 
               article={article}
               categories={categories}
@@ -177,7 +166,7 @@ export default function BlogEditor() {
             />
           </TabsContent>
           
-          <TabsContent value="preview">
+          <TabsContent value="preview" className="mt-6">
             <ArticlePreview article={article} tags={tags} />
           </TabsContent>
         </Tabs>
