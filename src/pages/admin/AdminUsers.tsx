@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   User, 
@@ -109,7 +108,7 @@ export default function AdminUsers() {
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
-    role: "user" as const,
+    role: "user" as 'admin' | 'blogger' | 'user',
     sendInvite: true
   });
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -163,7 +162,7 @@ export default function AdminUsers() {
     setNewUser({
       username: "",
       email: "",
-      role: "user",
+      role: "user" as 'admin' | 'blogger' | 'user',
       sendInvite: true
     });
     setDialogOpen(false);
@@ -370,7 +369,69 @@ export default function AdminUsers() {
             <DialogTrigger asChild>
               <Button>Add New User</Button>
             </DialogTrigger>
-            {/* Dialog content is the same as above */}
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New User</DialogTitle>
+                <DialogDescription>
+                  Create a new user account and assign a role.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input 
+                    id="username" 
+                    placeholder="Enter username" 
+                    value={newUser.username}
+                    onChange={(e) => setNewUser({...newUser, username: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="Enter email address" 
+                    value={newUser.email}
+                    onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="role">Role</Label>
+                  <Select 
+                    value={newUser.role} 
+                    onValueChange={(value: 'admin' | 'blogger' | 'user') => 
+                      setNewUser({...newUser, role: value})
+                    }
+                  >
+                    <SelectTrigger id="role">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">Administrator</SelectItem>
+                      <SelectItem value="blogger">Blogger</SelectItem>
+                      <SelectItem value="user">Regular User</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch 
+                    id="send-invite" 
+                    checked={newUser.sendInvite}
+                    onCheckedChange={(checked) => 
+                      setNewUser({...newUser, sendInvite: checked})
+                    }
+                  />
+                  <Label htmlFor="send-invite">Send invitation email</Label>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleAddUser}>Add User</Button>
+              </DialogFooter>
+            </DialogContent>
           </Dialog>
         </div>
       ) : (
