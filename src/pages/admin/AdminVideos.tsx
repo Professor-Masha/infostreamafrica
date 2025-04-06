@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { 
   Video, 
@@ -8,7 +7,8 @@ import {
   Search,
   Edit,
   Eye,
-  Plus
+  Plus,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
