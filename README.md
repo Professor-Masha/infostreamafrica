@@ -16,6 +16,8 @@ InfoStream Africa is a comprehensive news platform focused on delivering the lat
 - **Trending Articles**: Highlighting popular and trending news stories
 - **Search Functionality**: Robust search capability to find specific articles or topics
 - **Article Recommendations**: Suggestion engine based on user reading habits
+- **Blog Editor**: Rich text editor for creating and editing articles with scheduling capabilities
+- **Article Publishing Workflow**: Support for draft, scheduled, and published states
 
 ### Media Integration
 - **YouTube Channel Integration**: Seamless integration with InfoStream Africa YouTube channel
@@ -28,6 +30,7 @@ InfoStream Africa is a comprehensive news platform focused on delivering the lat
 - **User Profiles**: Personalized user accounts with preferences
 - **Reading History**: Tracking of articles viewed by users
 - **Bookmarking**: Ability to save articles for later reading
+- **Role-Based Access Control**: Different permissions for admins, writers, and regular users
 
 ### Analytics & Insights
 - **Article Analytics**: Tracking views, shares, and engagement
@@ -53,6 +56,15 @@ InfoStream Africa is a comprehensive news platform focused on delivering the lat
 - **JWT Tokens**: Secure authentication using JSON Web Tokens
 - **@react-oauth/google**: React library for Google authentication
 
+### UI Components
+- **Radix UI**: Unstyled, accessible components for building high-quality design systems
+- **Class Variance Authority**: Utility for creating variant components
+- **Sonner**: Toast notification system for user feedback
+- **React Hook Form**: Form validation and management
+- **Zod**: Schema validation library
+- **Embla Carousel**: Lightweight carousel component
+- **React Day Picker**: Flexible date picker component for scheduling posts
+
 ### API Integrations
 - **YouTube Data API v3**: Integration for video content
   - Channel information
@@ -63,124 +75,162 @@ InfoStream Africa is a comprehensive news platform focused on delivering the lat
 ### Development Tools
 - **ESLint**: Code linting for consistent style
 - **PostCSS**: Tool for transforming CSS with JavaScript
-- **Class Variance Authority**: Creating variant components efficiently
 - **Tailwind Merge**: Utility for merging Tailwind CSS classes
+- **Tailwind Animate**: Animation utilities for Tailwind
 
-## Design Philosophy
+## Getting Started
 
-### Responsive Design
-The application implements a fully responsive design strategy ensuring optimal user experience across all devices:
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn package manager
+- Git
 
-- **Mobile-First Approach**: Designed with mobile users as the primary consideration
-- **Adaptive Layout**: Content reorganizes based on screen size
-- **Touch-Friendly Elements**: Larger touch targets on mobile devices
-- **Consistent Typography**: Readable text across all devices
-- **Performance Optimization**: Fast loading even on slower connections
+### Setting Up the Development Environment
 
-### Accessibility
-- **Semantic HTML**: Proper use of HTML5 semantic elements
-- **ARIA Attributes**: Enhanced accessibility for screen readers
-- **Keyboard Navigation**: Complete functionality without mouse interaction
-- **Color Contrast**: WCAG 2.1 compliant color schemes
-- **Focus Management**: Clear visual indicators for keyboard focus
+#### Option 1: Using Visual Studio Code
 
-### User Experience
-- **Intuitive Navigation**: Clear information architecture
-- **Content Hierarchy**: Visual priority for important content
-- **Feedback Mechanisms**: Toast notifications for user actions
-- **Loading States**: Skeleton loading for content-heavy pages
-- **Error Handling**: User-friendly error messages
+1. **Clone the repository**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd infostream-africa
+   ```
 
-## Performance Optimization
+2. **Install dependencies**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-- **Code Splitting**: Dynamic imports for improved initial load time
-- **Image Optimization**: Appropriate sizing and lazy loading
-- **Memoization**: Strategic use of React.memo and useMemo
-- **State Management**: Efficient state updates with React Query
-- **Fetch Optimization**: Caching and deduplication of API requests
+3. **Open in VS Code**
+   ```sh
+   code .
+   ```
 
-## Future Development Roadmap
+4. **Start the development server**
+   - Open the VS Code terminal (Ctrl+` or Terminal -> New Terminal)
+   - Run the development server:
+     ```sh
+     npm run dev
+     # or
+     yarn dev
+     ```
+   - The application will be available at [http://localhost:8080](http://localhost:8080)
 
-- **Personalized Content Feed**: Algorithm-based content recommendations
-- **Multi-language Support**: Translation capabilities for pan-African reach
-- **Offline Reading**: Service worker implementation for offline article access
-- **Push Notifications**: Real-time alerts for breaking news
-- **User-generated Content**: Allowing verified users to contribute content
-- **Comment System**: Discussion capabilities on articles
-- **Advanced Analytics**: More detailed content performance metrics
-- **Mobile Applications**: Native mobile apps for iOS and Android
+5. **VS Code Extensions Recommended**
+   - ESLint
+   - Prettier
+   - Tailwind CSS IntelliSense
+   - TypeScript Vue Plugin (Volar)
+   - ES7+ React/Redux/React-Native snippets
 
-## How to Edit This Code
+#### Option 2: Using npm/yarn directly
 
-There are several ways to edit your application:
+1. **Clone the repository**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd infostream-africa
+   ```
 
-### Use Lovable
+2. **Install dependencies**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c66e162b-a4e4-411e-aeff-928305f658c0) and start prompting.
+3. **Start the development server**
+   ```sh
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+4. **Access the application**
+   Open your browser and navigate to [http://localhost:8080](http://localhost:8080)
 
-### Use Your Preferred IDE
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-### Edit a File Directly in GitHub
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-### Use GitHub Codespaces
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## Project Structure
+### Project Structure
 
 ```
 src/
 ├── components/      # Reusable UI components
 │   ├── ui/          # Base UI components from shadcn
+│   ├── blog/        # Blog-related components
 │   └── ...          # Feature-specific components
 ├── contexts/        # React contexts for state management
 ├── hooks/           # Custom React hooks
 ├── lib/             # Utility functions and shared code
 ├── pages/           # Page components for each route
+│   ├── admin/       # Admin dashboard pages
+│   └── writer/      # Writer dashboard pages
 ├── services/        # API service modules
 └── types/           # TypeScript type definitions
 ```
 
-## Environment Variables
+## Key Features Implementation
 
-The project uses the following environment variables:
+### Blog Editor System
 
-- `YOUTUBE_API_KEY` - YouTube Data API v3 key
-- `GOOGLE_CLIENT_ID` - Google OAuth client ID
+The platform includes a robust blog editor that supports:
 
-## Deployment
+- **Rich Text Editing**: Full WYSIWYG editing capabilities
+- **Article Scheduling**: Set publication dates for future release
+- **Draft Saving**: Save work in progress
+- **Image Upload**: Add images to articles
+- **Category & Tag Management**: Organize content effectively
+- **Preview Mode**: See how articles will look before publishing
+
+### User Role Management
+
+The system supports multiple user roles:
+
+- **Admin**: Full access to all features, can publish content directly
+- **Writer**: Can create content and submit for review
+- **Reader**: Can read, comment, and save articles
+
+### Responsive Design
+
+The application is fully responsive and works seamlessly on:
+- Desktop computers
+- Tablets
+- Mobile phones
+
+All UI components adjust dynamically based on screen size.
+
+## Building for Production
+
+To create a production build:
+
+```sh
+npm run build
+# or
+yarn build
+```
+
+The build output will be in the `dist` directory.
+
+To preview the production build locally:
+
+```sh
+npm run preview
+# or
+yarn preview
+```
+
+## Deployment Options
+
+### Using Lovable
 
 Simply open [Lovable](https://lovable.dev/projects/c66e162b-a4e4-411e-aeff-928305f658c0) and click on Share -> Publish.
+
+### Manual Deployment
+
+The project can be deployed to any static hosting service:
+- Vercel
+- Netlify
+- GitHub Pages
+- Amazon S3
+- Firebase Hosting
 
 ## Custom Domain Setup
 
@@ -192,6 +242,25 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Coding Standards
+
+- Use TypeScript for all new code
+- Follow the existing code style
+- Write tests for new features
+- Update documentation as needed
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please open an issue on the repository or contact the project maintainers.
