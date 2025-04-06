@@ -24,4 +24,14 @@ export interface Article {
   viewCount?: number;
   lastModified?: string;
   editorNotes?: string;
+  savedCount?: number;
+  savedBy?: string[];
+}
+
+export interface SavedItem {
+  id: string;
+  userId: string;
+  itemId: string;
+  itemType: 'article' | 'video';
+  savedDate: string;
 }

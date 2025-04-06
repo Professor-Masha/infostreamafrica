@@ -93,6 +93,41 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Responsive Typography */
+  h1 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-xl md:text-2xl lg:text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-lg md:text-xl font-bold;
+  }
+
+  /* Set font size based on screen size */
+  html {
+    font-size: 14px;
+  }
+
+  @screen md {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  @screen lg {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  /* Ensure proper viewport settings for mobile devices */
+  meta[name="viewport"] {
+    content: "width=device-width, initial-scale=1.0";
+  }
 }
 
 @layer components {
@@ -114,5 +149,83 @@
   
   .badge-updated {
     @apply bg-amber-500 text-white text-xs font-medium px-2.5 py-0.5 rounded;
+  }
+
+  /* Responsive layout helpers */
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+  }
+
+  .responsive-container {
+    @apply w-full px-4 sm:px-6 md:px-8 mx-auto;
+  }
+
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px]; /* Minimum size for touch targets */
+  }
+  
+  /* Improved button for mobile */
+  .mobile-friendly-button {
+    @apply px-4 py-3 text-base rounded-lg; /* Larger hit area for mobile */
+  }
+}
+
+/* Touch-friendly adjustments for mobile devices */
+@media (max-width: 640px) {
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"] {
+    @apply min-h-[44px];
+  }
+
+  input, 
+  select, 
+  textarea {
+    @apply text-base;
+  }
+
+  /* Increase spacing for touch interactions */
+  .space-touch {
+    @apply space-y-4;
+  }
+  
+  /* Prevent text from being too small */
+  .text-sm {
+    @apply text-base;
+  }
+}
+
+/* Image optimization */
+img {
+  @apply max-w-full h-auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Sidebar adjustments for responsive layouts */
+@media (max-width: 768px) {
+  .sidebar-mobile {
+    @apply fixed inset-y-0 left-0 z-50 w-64 transform -translate-x-full transition-transform duration-300 ease-in-out;
+  }
+  
+  .sidebar-mobile.open {
+    @apply translate-x-0;
+  }
+  
+  .overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-40 hidden;
+  }
+  
+  .overlay.active {
+    @apply block;
   }
 }

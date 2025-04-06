@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,26 @@ export function WriterLayout() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
+  // For responsive design - close sidebar on mobile initially
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+
+    // Set initial state
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   // Redirect if not blogger
   if (!user || (user.role !== 'blogger' && user.role !== 'admin')) {
     return <Navigate to="/" replace />;
@@ -42,7 +62,7 @@ export function WriterLayout() {
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       {/* Writer Sidebar */}
-      <div className={`${sidebarOpen ? "block" : "hidden"} md:block`}>
+      <div className={`${sidebarOpen ? "block" : "hidden"} md:block transition-all duration-300 z-30`}>
         <WriterSidebar collapsed={!sidebarOpen} />
       </div>
 
@@ -94,6 +114,10 @@ export function WriterLayout() {
                 <DropdownMenuItem onClick={() => navigate('/')}>
                   <ChevronLeft className="mr-2 h-4 w-4" />
                   <span>Back to Website</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <ChevronLeft className="mr-2 h-4 w-4" />
+                  <span>My Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>

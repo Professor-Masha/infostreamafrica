@@ -42,6 +42,8 @@ import AdminYouTube from "@/pages/admin/AdminYouTube";
 import { WriterLayout } from "@/components/WriterLayout";
 import WriterDashboard from "@/pages/writer/WriterDashboard";
 import WriterArticles from "@/pages/writer/WriterArticles";
+import WriterAnalytics from "@/pages/writer/WriterAnalytics";
+import VideoDetail from "@/pages/VideoDetail";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -95,6 +97,7 @@ const App = () => {
                   }>
                     <Route path="/writer" element={<WriterDashboard />} />
                     <Route path="/writer/articles" element={<WriterArticles />} />
+                    <Route path="/writer/analytics" element={<WriterAnalytics />} />
                     <Route path="/writer/new" element={<BlogEditor />} />
                     <Route path="/writer/edit/:id" element={<BlogEditor />} />
                   </Route>
@@ -104,6 +107,7 @@ const App = () => {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/article/:id" element={<ArticleDetail />} />
+                    <Route path="/video/:id" element={<VideoDetail />} />
                     <Route path="/trending" element={<Trending />} />
                     
                     {/* YouTube and Videos pages */}

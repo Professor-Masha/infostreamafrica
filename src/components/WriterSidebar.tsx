@@ -9,7 +9,13 @@ import {
   Home,
   User,
   Settings,
-  BookOpen
+  BookOpen,
+  BarChart2,
+  Heart,
+  MessageSquare,
+  Calendar,
+  Clock,
+  Video
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,6 +38,10 @@ export function WriterSidebar({ collapsed = false }: { collapsed?: boolean }) {
   const mainMenuItems: SidebarItem[] = [
     { name: "Dashboard", path: "/writer", icon: LayoutDashboard },
     { name: "My Articles", path: "/writer/articles", icon: FileText, badge: 3 },
+    { name: "Analytics", path: "/writer/analytics", icon: BarChart2 },
+    { name: "Saved", path: "/writer/saved", icon: Heart },
+    { name: "Comments", path: "/writer/comments", icon: MessageSquare },
+    { name: "Scheduled", path: "/writer/scheduled", icon: Clock },
   ];
 
   const toolsMenuItems: SidebarItem[] = [
@@ -55,7 +65,7 @@ export function WriterSidebar({ collapsed = false }: { collapsed?: boolean }) {
         {!collapsed && (
           <Link to="/" className="flex items-center space-x-2">
             <BookOpen className="h-5 w-5" />
-            <span className="font-bold text-lg">Writer Portal</span>
+            <span className="font-bold text-lg">InfoStream Africa</span>
           </Link>
         )}
         {collapsed && (

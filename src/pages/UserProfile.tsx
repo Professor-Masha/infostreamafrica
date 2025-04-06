@@ -1,376 +1,251 @@
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { toast } from "@/components/ui/use-toast";
-import { Shield, User, Key, AlertCircle } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Article } from "@/types/article";
+import { Heart, Trash2, Eye, Calendar, FileText, Video as VideoIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 export default function UserProfile() {
-  const { user, login } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState('profile');
-  const location = useLocation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("profile");
+
+  // Mock saved articles and videos for the user
+  const savedArticles = [
+    { 
+      id: "1", 
+      title: "Understanding Climate Change in Africa", 
+      description: "An in-depth look at climate change effects across the African continent.",
+      date: "2023-10-15", 
+      author: "John Smith",
+      category: "Environment"
+    },
+    { 
+      id: "2", 
+      title: "Traditional Medicine in Modern Healthcare", 
+      description: "How traditional African medicines are being integrated into modern healthcare systems.",
+      date: "2023-09-22", 
+      author: "Sarah Johnson",
+      category: "Health"
+    },
+    { 
+      id: "3", 
+      title: "Renewable Energy Solutions for Rural Areas", 
+      description: "Innovative approaches to providing sustainable energy in rural African communities.",
+      date: "2023-08-30", 
+      author: "David Okafor",
+      category: "Technology"
+    },
+  ];
   
-  const [userData, setUserData] = useState({
-    username: user?.username || '',
-    email: user?.email || '',
-    fullName: user?.fullName || '',
-    avatar: user?.avatar || '',
-  });
-  
-  const [privacySettings, setPrivacySettings] = useState({
-    shareProfile: false,
-    receiveNotifications: true,
-    showActivity: true,
-    useCookies: true,
-    dataCollection: true,
-  });
-  
-  useEffect(() => {
-    // Check if we need to open a specific tab based on URL params
-    const params = new URLSearchParams(location.search);
-    const tab = params.get('tab');
-    if (tab === 'privacy') {
-      setActiveTab('privacy');
-    }
-  }, [location]);
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
+  const savedVideos = [
+    { 
+      id: "1", 
+      title: "Africa's Tech Revolution", 
+      description: "How technology is transforming business and society across Africa.",
+      duration: "18:24", 
+      creator: "Tech Insights",
+      category: "Technology",
+      thumbnailUrl: "https://via.placeholder.com/320x180?text=Africa's+Tech+Revolution"
+    },
+    { 
+      id: "2", 
+      title: "Wildlife Conservation Efforts", 
+      description: "Current initiatives to protect Africa's endangered species.",
+      duration: "24:15", 
+      creator: "Nature Explorers",
+      category: "Environment",
+      thumbnailUrl: "https://via.placeholder.com/320x180?text=Wildlife+Conservation"
+    },
+  ];
+
+  const recentActivity = [
+    { action: "Saved article", item: "Understanding Climate Change in Africa", date: "2023-10-15" },
+    { action: "Saved video", item: "Africa's Tech Revolution", date: "2023-10-13" },
+    { action: "Commented on", item: "Traditional Medicine in Modern Healthcare", date: "2023-10-10" },
+    { action: "Saved article", item: "Renewable Energy Solutions for Rural Areas", date: "2023-10-05" },
+  ];
+
+  const handleRemoveSavedItem = (id: string, type: 'article' | 'video') => {
+    // In a real app, this would remove the item from the saved items list
+    console.log(`Removing ${type} with id: ${id}`);
   };
-  
-  const handlePrivacyChange = (setting: string, value: boolean) => {
-    setPrivacySettings({
-      ...privacySettings,
-      [setting]: value
-    });
-  };
-  
-  const handleSaveProfile = () => {
-    // In a real application, this would make an API call to update the user profile
-    if (user) {
-      const updatedUser = {
-        ...user,
-        username: userData.username,
-        email: userData.email,
-        fullName: userData.fullName,
-        avatar: userData.avatar,
-      };
-      
-      // Update in localStorage
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      
-      // Update in context
-      login(updatedUser);
-      
-      toast({
-        title: "Profile updated",
-        description: "Your profile information has been updated successfully.",
-      });
-      
-      setIsEditing(false);
-    }
-  };
-  
-  const handleSavePrivacy = () => {
-    // In a real application, this would make an API call to update privacy settings
-    toast({
-      title: "Privacy settings updated",
-      description: "Your privacy preferences have been saved.",
-    });
-  };
-  
+
   return (
-    <div className="container mx-auto py-6 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">Your Profile</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6">
-        <div className="space-y-4">
+    <div className="container mx-auto py-8 px-4 max-w-6xl">
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Profile Sidebar */}
+        <div className="md:w-1/3">
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center space-y-3">
-                <Avatar className="h-24 w-24">
-                  {userData.avatar ? (
-                    <AvatarImage src={userData.avatar} alt={userData.username} />
+            <CardHeader>
+              <div className="flex flex-col items-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  {user?.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user?.username} />
                   ) : (
-                    <AvatarFallback className="text-2xl">
-                      {userData.username?.charAt(0).toUpperCase() || 'U'}
+                    <AvatarFallback className="text-4xl">
+                      {user?.username?.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   )}
                 </Avatar>
-                <div className="text-center">
-                  <h2 className="text-xl font-medium">{userData.fullName || userData.username}</h2>
-                  <p className="text-sm text-muted-foreground">{userData.email}</p>
+                <CardTitle className="text-center">{user?.fullName || user?.username}</CardTitle>
+                <CardDescription className="text-center">{user?.email}</CardDescription>
+                
+                <div className="flex gap-2 mt-4">
+                  <Badge variant="outline" className="py-1">
+                    <FileText className="h-3 w-3 mr-1" />
+                    Reader
+                  </Badge>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Recent Activity</h4>
+                  <ul className="space-y-2">
+                    {recentActivity.map((activity, index) => (
+                      <li key={index} className="text-sm">
+                        <span className="text-muted-foreground">{activity.action}:</span> {activity.item}
+                        <p className="text-xs text-muted-foreground">{activity.date}</p>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Settings</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="flex flex-col">
-                <Button 
-                  variant={activeTab === 'profile' ? "secondary" : "ghost"} 
-                  className="flex items-center justify-start gap-2 rounded-none h-12 px-4"
-                  onClick={() => setActiveTab('profile')}
-                >
-                  <User className="h-4 w-4" /> Profile Information
-                </Button>
-                <Button 
-                  variant={activeTab === 'privacy' ? "secondary" : "ghost"} 
-                  className="flex items-center justify-start gap-2 rounded-none h-12 px-4"
-                  onClick={() => setActiveTab('privacy')}
-                >
-                  <Shield className="h-4 w-4" /> Privacy Settings
-                </Button>
-                <Button 
-                  variant={activeTab === 'security' ? "secondary" : "ghost"} 
-                  className="flex items-center justify-start gap-2 rounded-none h-12 px-4"
-                  onClick={() => setActiveTab('security')}
-                >
-                  <Key className="h-4 w-4" /> Password & Security
-                </Button>
-              </div>
-            </CardContent>
+            <CardFooter>
+              <Button variant="outline" className="w-full" onClick={() => navigate('/settings')}>
+                Edit Profile
+              </Button>
+            </CardFooter>
           </Card>
         </div>
-        
-        <div>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsContent value="profile">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Profile Information</CardTitle>
-                  <CardDescription>
-                    Manage your personal information and how it appears on the platform
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {isEditing ? (
-                    <>
-                      <div className="space-y-2">
-                        <Label htmlFor="fullName">Full Name</Label>
-                        <Input
-                          id="fullName"
-                          name="fullName"
-                          value={userData.fullName}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                          id="username"
-                          name="username"
-                          value={userData.username}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={userData.email}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="avatar">Avatar URL</Label>
-                        <Input
-                          id="avatar"
-                          name="avatar"
-                          value={userData.avatar}
-                          onChange={handleInputChange}
-                          placeholder="https://example.com/avatar.jpg"
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Full Name</p>
-                          <p>{userData.fullName || "Not set"}</p>
+
+        {/* Main Content */}
+        <div className="md:w-2/3">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="saved-articles">
+                <FileText className="h-4 w-4 mr-2" />
+                Saved Articles
+              </TabsTrigger>
+              <TabsTrigger value="saved-videos">
+                <VideoIcon className="h-4 w-4 mr-2" />
+                Saved Videos
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="saved-articles" className="mt-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {savedArticles.length > 0 ? (
+                  savedArticles.map((article) => (
+                    <Card key={article.id} className="hover:shadow-md transition-shadow">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between">
+                          <Badge className="mb-2">{article.category}</Badge>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleRemoveSavedItem(article.id, 'article')}
+                          >
+                            <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">Username</p>
-                          <p>{userData.username}</p>
+                        <CardTitle className="text-lg cursor-pointer hover:text-blue-600" onClick={() => navigate(`/article/${article.id}`)}>
+                          {article.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{article.description}</p>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <Calendar className="h-3.5 w-3.5 mr-1" />
+                          <span>{article.date}</span>
+                          <span className="mx-2">•</span>
+                          <span>By {article.author}</span>
                         </div>
-                      </div>
-                      
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">Email</p>
-                        <p>{userData.email}</p>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-                <CardFooter className="flex justify-end gap-2">
-                  {isEditing ? (
-                    <>
-                      <Button variant="outline" onClick={() => setIsEditing(false)}>
-                        Cancel
-                      </Button>
-                      <Button onClick={handleSaveProfile}>
-                        Save Changes
-                      </Button>
-                    </>
-                  ) : (
-                    <Button onClick={() => setIsEditing(true)}>
-                      Edit Profile
-                    </Button>
-                  )}
-                </CardFooter>
-              </Card>
+                      </CardContent>
+                      <CardFooter className="pt-0">
+                        <Button variant="outline" size="sm" className="w-full" onClick={() => navigate(`/article/${article.id}`)}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          Read Article
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="col-span-2 py-12 text-center">
+                    <Heart className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No saved articles yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Articles you save will appear here for easy access.
+                    </p>
+                    <Button onClick={() => navigate('/')}>Browse Articles</Button>
+                  </div>
+                )}
+              </div>
             </TabsContent>
             
-            <TabsContent value="privacy">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Privacy Settings</CardTitle>
-                  <CardDescription>
-                    Control how your information is used and shared on the platform
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">Share Profile Information</h3>
-                      <p className="text-sm text-muted-foreground">Allow other users to see your profile details</p>
-                    </div>
-                    <Switch 
-                      checked={privacySettings.shareProfile} 
-                      onCheckedChange={(checked) => handlePrivacyChange('shareProfile', checked)} 
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">Email Notifications</h3>
-                      <p className="text-sm text-muted-foreground">Receive updates and newsletters via email</p>
-                    </div>
-                    <Switch 
-                      checked={privacySettings.receiveNotifications} 
-                      onCheckedChange={(checked) => handlePrivacyChange('receiveNotifications', checked)} 
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">Activity Tracking</h3>
-                      <p className="text-sm text-muted-foreground">Track which articles you've viewed to provide better recommendations</p>
-                    </div>
-                    <Switch 
-                      checked={privacySettings.showActivity} 
-                      onCheckedChange={(checked) => handlePrivacyChange('showActivity', checked)} 
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">Cookie Usage</h3>
-                      <p className="text-sm text-muted-foreground">Allow cookies to enhance your browsing experience</p>
-                    </div>
-                    <Switch 
-                      checked={privacySettings.useCookies} 
-                      onCheckedChange={(checked) => handlePrivacyChange('useCookies', checked)} 
-                    />
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium">Data Collection</h3>
-                      <p className="text-sm text-muted-foreground">Allow anonymous data collection to improve our services</p>
-                    </div>
-                    <Switch 
-                      checked={privacySettings.dataCollection} 
-                      onCheckedChange={(checked) => handlePrivacyChange('dataCollection', checked)} 
-                    />
-                  </div>
-                  
-                  <div className="flex items-start space-x-2 p-4 bg-muted/50 rounded-lg">
-                    <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium">Data Protection Notice</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Your data is stored securely and never shared with third parties without your explicit consent.
-                        We comply with GDPR and other applicable data protection regulations.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-end">
-                  <Button onClick={handleSavePrivacy}>
-                    Save Privacy Settings
-                  </Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="security">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Password & Security</CardTitle>
-                  <CardDescription>
-                    Manage your account security settings and login preferences
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="current-password">Current Password</Label>
-                    <Input id="current-password" type="password" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="new-password">New Password</Label>
-                    <Input id="new-password" type="password" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm New Password</Label>
-                    <Input id="confirm-password" type="password" />
-                  </div>
-                  
-                  <div className="pt-4">
-                    <h3 className="font-medium mb-2">Two-Factor Authentication</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Add an extra layer of security to your account by enabling two-factor authentication.
+            <TabsContent value="saved-videos" className="mt-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {savedVideos.length > 0 ? (
+                  savedVideos.map((video) => (
+                    <Card key={video.id} className="hover:shadow-md transition-shadow">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between">
+                          <Badge className="mb-2">{video.category}</Badge>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleRemoveSavedItem(video.id, 'video')}
+                          >
+                            <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </div>
+                        <div className="relative mb-3 aspect-video overflow-hidden rounded-md">
+                          <img 
+                            src={video.thumbnailUrl} 
+                            alt={video.title} 
+                            className="object-cover w-full h-full"
+                          />
+                          <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
+                            {video.duration}
+                          </div>
+                        </div>
+                        <CardTitle className="text-lg cursor-pointer hover:text-blue-600" onClick={() => navigate(`/video/${video.id}`)}>
+                          {video.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{video.description}</p>
+                        <div className="flex items-center text-sm text-muted-foreground">
+                          <span>By {video.creator}</span>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="pt-0">
+                        <Button variant="outline" size="sm" className="w-full" onClick={() => navigate(`/video/${video.id}`)}>
+                          <VideoIcon className="h-4 w-4 mr-2" />
+                          Watch Video
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="col-span-2 py-12 text-center">
+                    <Heart className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No saved videos yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Videos you save will appear here for easy access.
                     </p>
-                    <Button variant="outline">Enable 2FA</Button>
+                    <Button onClick={() => navigate('/videos')}>Browse Videos</Button>
                   </div>
-                  
-                  <div className="pt-4">
-                    <h3 className="font-medium mb-2">Active Sessions</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      You're currently logged in on this device. You can log out of all other devices if needed.
-                    </p>
-                    <Button variant="outline" className="text-destructive hover:text-destructive">
-                      Log out of all other devices
-                    </Button>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-end">
-                  <Button>
-                    Update Password
-                  </Button>
-                </CardFooter>
-              </Card>
+                )}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
