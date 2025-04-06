@@ -1,15 +1,13 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Save, FileCheck, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArticleEditor } from "@/components/ArticleEditor";
-import { ArticlePreview } from "@/components/ArticlePreview";
 import { useToast } from "@/hooks/use-toast";
 import { Article } from "@/types/article";
 import { useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { PublishActions } from "@/components/blog/PublishActions";
+import { BlogEditorContent } from "@/components/blog/BlogEditorContent";
 
 // Mock categories for our editor
 const categories = [
@@ -45,7 +43,6 @@ export default function BlogEditor() {
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState<string>("");
   const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const { user, isAdmin } = useAuth();
   const [activeTab, setActiveTab] = useState<string>("editor");
 
@@ -83,10 +80,6 @@ export default function BlogEditor() {
 
   const handleContentChange = (content: string) => {
     setArticle(prev => ({ ...prev, content }));
-  };
-
-  const handleImageUpload = () => {
-    fileInputRef.current?.click();
   };
 
   const handleSave = (status: 'draft' | 'published') => {
@@ -144,62 +137,24 @@ export default function BlogEditor() {
           <h1 className="text-2xl font-bold">
             {id ? "Edit Article" : "Create New Article"}
           </h1>
-          <div className="flex gap-2">
-            {article.status === 'scheduled' ? (
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-1" 
-                disabled={isLoading}
-              >
-                <Calendar className="h-4 w-4" />
-                Scheduled
-              </Button>
-            ) : (
-              <Button 
-                variant="outline" 
-                onClick={() => handleSave('draft')} 
-                disabled={isLoading}
-              >
-                <Save className="mr-2 h-4 w-4" />
-                Save Draft
-              </Button>
-            )}
-            
-            {isAdmin && article.status !== 'scheduled' && (
-              <Button 
-                onClick={() => handleSave('published')} 
-                disabled={isLoading}
-              >
-                <FileCheck className="mr-2 h-4 w-4" />
-                {isLoading ? "Publishing..." : "Publish"}
-              </Button>
-            )}
-          </div>
+          <PublishActions 
+            article={article}
+            isLoading={isLoading}
+            isAdmin={isAdmin}
+            onSave={handleSave}
+          />
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="editor">Editor</TabsTrigger>
-            <TabsTrigger value="preview">Preview</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="editor" className="mt-6">
-            <ArticleEditor 
-              article={article}
-              categories={categories}
-              tags={tags}
-              setArticle={setArticle}
-              setTags={setTags}
-              fileInputRef={fileInputRef}
-              handleImageUpload={handleImageUpload}
-              handleContentChange={handleContentChange}
-            />
-          </TabsContent>
-          
-          <TabsContent value="preview" className="mt-6">
-            <ArticlePreview article={article} tags={tags} />
-          </TabsContent>
-        </Tabs>
+        <BlogEditorContent 
+          article={article}
+          categories={categories}
+          tags={tags}
+          setArticle={setArticle}
+          setTags={setTags}
+          handleContentChange={handleContentChange}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
       </div>
     </ProtectedRoute>
   );
