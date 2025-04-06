@@ -1,11 +1,12 @@
 
-import { Bell, User, LogOut, UserCircle, Shield, Settings, Menu, X, LayoutDashboard } from "lucide-react";
+import { User, LogOut, UserCircle, Shield, Settings, Menu, X, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SearchBar } from "@/components/SearchBar";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
+import { NotificationDropdown } from "@/components/NotificationDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,10 +61,7 @@ export function Header() {
       
       {/* Right section with user controls */}
       <div className={`flex-1 ${mobileMenuOpen ? 'hidden' : 'flex'} md:flex items-center gap-2 justify-end`}>
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
-        </Button>
+        <NotificationDropdown />
         
         {isAuthenticated ? (
           <DropdownMenu>

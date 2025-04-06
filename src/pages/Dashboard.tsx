@@ -1,100 +1,123 @@
 
 import React from 'react';
-import { ArticleCard } from '@/components/ArticleCard';
+import { MainNavigation } from '@/components/MainNavigation';
+import { FeaturedArticle } from '@/components/FeaturedArticle';
+import { NewsGrid } from '@/components/NewsGrid';
 import { LatestYouTubeVideo } from '@/components/LatestYouTubeVideo';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 // Mock data for articles
-const articles = [
-  {
-    id: "1",
-    title: "Advancements in Pharmaceutical Research",
-    description: "New developments in the field of pharmaceutical research show promising results for treatment of various diseases.",
-    date: "2023-05-20",
-    author: "Dr. Jane Smith",
-    category: "Medicine",
-    image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
-    isNew: true,
-  },
+const featuredArticle = {
+  id: "1",
+  title: "Israel changes account of Gaza medic killings after video showed deadly attack",
+  description: "Israeli forces killed 15 emergency workers in a convoy of ambulances near Rafah on 23 March, officials confirm after video evidence emerges.",
+  date: "2023-05-20",
+  author: "Middle East Correspondent",
+  category: "Middle East",
+  image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+  isNew: true,
+};
+
+// Secondary features
+const secondaryFeatures = [
   {
     id: "2",
-    title: "Climate Change Impact on Health",
-    description: "Recent studies show the direct correlation between climate change and increasing health issues in vulnerable populations.",
-    date: "2023-05-15",
-    author: "Prof. Robert Johnson",
-    category: "Environment",
+    title: "Two UK MPs denied entry to Israel",
+    description: "Israel says Yuan Yang and Abtisam Mohamed were refused entry as they intended to \"spread hate speech\".",
+    date: "8 hrs ago",
+    author: "BBC Correspondent",
+    category: "Middle East",
     image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isTrending: true,
   },
   {
     id: "3",
-    title: "Medical Ethics in AI Development",
-    description: "As AI becomes more integrated in healthcare, ethical considerations become increasingly important.",
-    date: "2023-05-12",
-    author: "Dr. Sarah Williams",
-    category: "Technology",
+    title: "Why shoppers are snapping up 'stripes' products for eye-popping prices",
+    description: "As Canada's Hudson's Bay Company faces an end to its 355-year legacy, shoppers are scrambling for anything with its iconic \"stripes\".",
+    date: "14 hrs ago",
+    author: "US & Canada Correspondent",
+    category: "Business",
     image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
   },
+];
+
+// Regular articles
+const articles = [
   {
     id: "4",
-    title: "Breakthrough in Cancer Research",
-    description: "Scientists have discovered a new approach to targeting specific cancer cells that could revolutionize treatment.",
-    date: "2023-05-08",
-    author: "Dr. Michael Chen",
-    category: "Research",
+    title: "Le Pen calls embezzlement conviction a 'witch hunt'",
+    description: "The French far-right politician spoke to a rally in Paris after being found guilty of embezzling EU funds.",
+    date: "2 hrs ago",
+    author: "Europe Correspondent",
+    category: "Europe",
     image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
-    isUpdated: true,
+    isNew: false,
   },
   {
     id: "5",
-    title: "Mental Health Awareness Month",
-    description: "Initiatives and resources available during Mental Health Awareness Month to support wellbeing.",
-    date: "2023-05-05",
-    author: "Dr. Emily Harris",
-    category: "Mental Health",
+    title: "More than 50 countries contact US in bid to negotiate tariffs",
+    description: "Israel's Netanyahu is heading to the US for trade talks, while Vietnam has asked for a 46-day delay.",
+    date: "5 hrs ago",
+    author: "Business Correspondent",
+    category: "Business",
     image: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isTrending: true,
   },
   {
     id: "6",
-    title: "Nutritional Guidelines Updated",
-    description: "The latest nutritional guidelines emphasize plant-based diets and sustainable food choices.",
-    date: "2023-05-01",
-    author: "Nutritionist Rebecca Adams",
-    category: "Nutrition",
+    title: "Breakthrough in Cancer Research",
+    description: "Scientists have discovered a new approach to targeting specific cancer cells that could revolutionize treatment.",
+    date: "2023-05-08",
+    author: "Dr. Michael Chen",
+    category: "Health",
     image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
+    isUpdated: true,
   },
 ];
 
 export default function Dashboard() {
-  const navigateToArticle = (id: string) => {
-    window.location.href = `/article/${id}`;
-  };
-
   return (
-    <div className="container mx-auto py-6 max-w-7xl">
-      <h1 className="text-3xl font-bold mb-6">Latest News and Updates</h1>
+    <div className="min-h-screen bg-background">
+      <MainNavigation />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            id={article.id}
-            title={article.title}
-            description={article.description}
-            date={article.date}
-            author={article.author}
-            category={article.category}
-            image={article.image}
-            isNew={article.isNew}
-            isTrending={article.isTrending}
-            isUpdated={article.isUpdated}
-            onClick={() => navigateToArticle(article.id)}
-          />
-        ))}
+      <div className="container max-w-7xl mx-auto py-6 px-4 space-y-10">
+        {/* Featured story */}
+        <div className="space-y-6">
+          <FeaturedArticle article={featuredArticle} />
+        </div>
+        
+        {/* Secondary features */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {secondaryFeatures.map((article) => (
+            <div key={article.id} className="space-y-2">
+              <img 
+                src={article.image} 
+                alt={article.title} 
+                className="w-full h-52 object-cover rounded-lg"
+              />
+              <h3 className="text-xl font-bold">{article.title}</h3>
+              <p className="text-sm text-muted-foreground">{article.description}</p>
+              <div className="flex items-center text-xs text-muted-foreground space-x-2">
+                <span>{article.date}</span>
+                <span>•</span>
+                <span>{article.category}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <Separator />
+        
+        {/* Latest news */}
+        <NewsGrid articles={articles} title="Latest News" />
+        
+        {/* YouTube section */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold">Latest Videos</h2>
+          <LatestYouTubeVideo />
+        </div>
       </div>
-      
-      {/* Latest YouTube Videos Section */}
-      <LatestYouTubeVideo />
     </div>
   );
 }
