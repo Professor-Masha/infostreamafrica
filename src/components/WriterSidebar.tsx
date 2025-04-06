@@ -4,19 +4,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
   FileText, 
-  Users, 
-  BarChart, 
-  Settings, 
   LogOut,
   PlusCircle,
   Home,
-  MessageSquare,
-  Bookmark,
-  Bell,
-  Image,
-  Calendar,
-  Video,
-  Youtube
+  User,
+  Settings,
+  BookOpen
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,22 +24,19 @@ interface SidebarItem {
   badge?: number;
 }
 
-export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
+export function WriterSidebar({ collapsed = false }: { collapsed?: boolean }) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   const mainMenuItems: SidebarItem[] = [
-    { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
-    { name: "Articles", path: "/admin/articles", icon: FileText, badge: 5 },
-    { name: "Videos", path: "/admin/videos", icon: Video },
-    { name: "YouTube", path: "/admin/youtube", icon: Youtube },
-    { name: "Users", path: "/admin/users", icon: Users },
+    { name: "Dashboard", path: "/writer", icon: LayoutDashboard },
+    { name: "My Articles", path: "/writer/articles", icon: FileText, badge: 3 },
   ];
 
   const toolsMenuItems: SidebarItem[] = [
-    { name: "Analytics", path: "/admin/analytics", icon: BarChart },
-    { name: "Settings", path: "/admin/settings", icon: Settings },
+    { name: "Profile", path: "/profile", icon: User },
+    { name: "Preferences", path: "/writer/preferences", icon: Settings },
   ];
 
   const isActive = (path: string) => {
@@ -64,24 +54,24 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
       <div className="p-4 border-b border-slate-800 flex items-center">
         {!collapsed && (
           <Link to="/" className="flex items-center space-x-2">
-            <Home className="h-5 w-5" />
-            <span className="font-bold text-lg">InfoStream</span>
+            <BookOpen className="h-5 w-5" />
+            <span className="font-bold text-lg">Writer Portal</span>
           </Link>
         )}
         {collapsed && (
           <Link to="/" className="mx-auto">
-            <Home className="h-5 w-5" />
+            <BookOpen className="h-5 w-5" />
           </Link>
         )}
       </div>
 
-      {/* New Content Button */}
+      {/* New Article Button */}
       <div className="p-3">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button 
-                onClick={() => navigate('/blog/new')}
+                onClick={() => navigate('/writer/new')}
                 className={`w-full bg-blue-600 hover:bg-blue-700 ${collapsed ? 'px-0' : ''}`}
               >
                 <PlusCircle className={`h-5 w-5 ${collapsed ? '' : 'mr-2'}`} />
@@ -96,7 +86,7 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
       {/* Main Menu */}
       <div className="flex-1 overflow-y-auto py-2">
         <div className="px-3 py-2">
-          {!collapsed && <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Main Menu</h3>}
+          {!collapsed && <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Content</h3>}
           <ul className="mt-2 space-y-1">
             {mainMenuItems.map((item) => (
               <li key={item.name}>
@@ -136,7 +126,7 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
         </div>
 
         <div className="px-3 py-2">
-          {!collapsed && <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tools</h3>}
+          {!collapsed && <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Account</h3>}
           <ul className="mt-2 space-y-1">
             {toolsMenuItems.map((item) => (
               <li key={item.name}>
@@ -182,7 +172,7 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
                 <TooltipContent side="right">
                   <div>
                     <p className="font-medium">{user?.username}</p>
-                    <p className="text-xs text-slate-400">Administrator</p>
+                    <p className="text-xs text-slate-400">Writer</p>
                   </div>
                 </TooltipContent>
               </Tooltip>
@@ -198,7 +188,7 @@ export function AdminSidebar({ collapsed = false }: { collapsed?: boolean }) {
               </Avatar>
               <div className="ml-3">
                 <p className="text-sm font-medium">{user?.username}</p>
-                <p className="text-xs text-slate-400">Administrator</p>
+                <p className="text-xs text-slate-400">Writer</p>
               </div>
             </>
           )}

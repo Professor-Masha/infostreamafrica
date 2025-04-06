@@ -37,6 +37,11 @@ import AdminArticles from "@/pages/admin/AdminArticles";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminAnalytics from "@/pages/admin/AdminAnalytics";
 import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminVideos from "@/pages/admin/AdminVideos";
+import AdminYouTube from "@/pages/admin/AdminYouTube";
+import { WriterLayout } from "@/components/WriterLayout";
+import WriterDashboard from "@/pages/writer/WriterDashboard";
+import WriterArticles from "@/pages/writer/WriterArticles";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -78,6 +83,20 @@ const App = () => {
                     <Route path="/admin/users" element={<AdminUsers />} />
                     <Route path="/admin/analytics" element={<AdminAnalytics />} />
                     <Route path="/admin/settings" element={<AdminSettings />} />
+                    <Route path="/admin/videos" element={<AdminVideos />} />
+                    <Route path="/admin/youtube" element={<AdminYouTube />} />
+                  </Route>
+                  
+                  {/* Writer routes with writer layout */}
+                  <Route element={
+                    <ProtectedRoute requiredRole="blogger">
+                      <WriterLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route path="/writer" element={<WriterDashboard />} />
+                    <Route path="/writer/articles" element={<WriterArticles />} />
+                    <Route path="/writer/new" element={<BlogEditor />} />
+                    <Route path="/writer/edit/:id" element={<BlogEditor />} />
                   </Route>
                   
                   {/* Public routes within layout */}

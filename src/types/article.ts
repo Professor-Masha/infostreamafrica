@@ -16,4 +16,12 @@ export interface Article {
   status: 'draft' | 'published' | 'scheduled';
   scheduledDate?: string;
   references?: string[];
+  videoLinks?: string[];
+  youtubeIds?: string[];
+  relatedArticleIds?: string[];
+  seoKeywords?: string[];
+  seoDescription?: string;
+  viewCount?: number;
+  lastModified?: string;
+  editorNotes?: string;
 }
