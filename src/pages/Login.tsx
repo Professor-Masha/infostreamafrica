@@ -31,7 +31,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">MediScience Hub</h1>
+          <h1 className="text-3xl font-bold">InfoStream Africa</h1>
           <p className="text-muted-foreground">
             {isAdminPath ? "Admin Portal" : "Blogger & Admin Platform"}
           </p>
