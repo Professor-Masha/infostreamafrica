@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { RichTextEditor } from './RichTextEditor';
@@ -18,6 +17,7 @@ import { Form } from '@/components/ui/form';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { cn } from '@/lib/utils';
 
 interface ArticleEditorProps {
   article: Article;
@@ -30,7 +30,6 @@ interface ArticleEditorProps {
   handleContentChange: (content: string) => void;
 }
 
-// Form schema for the author and scheduling form
 const scheduleFormSchema = z.object({
   authorFullName: z.string().min(1, { message: "Author name is required" }),
   isScheduled: z.boolean().default(false),
@@ -53,7 +52,6 @@ export function ArticleEditor({
   const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
   const [isAuthorDialogOpen, setIsAuthorDialogOpen] = useState(false);
 
-  // Initialize the form with current values
   const form = useForm<z.infer<typeof scheduleFormSchema>>({
     resolver: zodResolver(scheduleFormSchema),
     defaultValues: {
@@ -69,21 +67,17 @@ export function ArticleEditor({
   };
 
   const handleVideoSubmit = () => {
-    // Extract YouTube video ID from URL
     let videoId = videoUrl;
     
-    // Handle full YouTube URLs
     if (videoUrl.includes('youtube.com/watch?v=')) {
       const urlParams = new URLSearchParams(new URL(videoUrl).search);
       videoId = urlParams.get('v') || '';
     } 
-    // Handle youtu.be short URLs
     else if (videoUrl.includes('youtu.be/')) {
       videoId = videoUrl.split('youtu.be/')[1]?.split('?')[0] || '';
     }
 
     if (videoId) {
-      // Insert a YouTube iframe into the content
       const videoEmbed = `<div class="video-container"><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
       const newContent = article.content + videoEmbed;
       handleContentChange(newContent);
@@ -107,14 +101,11 @@ export function ArticleEditor({
   const onAuthorFormSubmit = (data: z.infer<typeof scheduleFormSchema>) => {
     const updatedArticle = { ...article };
     
-    // Update author information
     updatedArticle.authorFullName = data.authorFullName;
     
-    // Update scheduling information
     if (data.isScheduled && data.scheduledDate) {
       updatedArticle.status = 'scheduled';
       
-      // Combine date and time
       const scheduledDateTime = new Date(data.scheduledDate);
       
       if (data.scheduledTime) {
@@ -124,7 +115,6 @@ export function ArticleEditor({
       
       updatedArticle.scheduledDate = scheduledDateTime.toISOString();
     } else if (data.isScheduled) {
-      // If scheduled is checked but no date is selected
       toast({
         title: "Date required",
         description: "Please select a date for scheduling publication.",
@@ -132,7 +122,6 @@ export function ArticleEditor({
       });
       return;
     } else {
-      // Not scheduled
       updatedArticle.status = 'draft';
       updatedArticle.scheduledDate = undefined;
     }
@@ -198,7 +187,6 @@ export function ArticleEditor({
             const file = e.target.files?.[0];
             if (file) {
               const imageUrl = URL.createObjectURL(file);
-              // Insert the image at the current cursor position in the editor
               const imageTag = `<img src="${imageUrl}" alt="Uploaded image" class="w-full max-w-full h-auto my-4 rounded-md" />`;
               const newContent = article.content + imageTag;
               handleContentChange(newContent);
@@ -220,7 +208,6 @@ export function ArticleEditor({
         />
       </div>
 
-      {/* Video Embed Dialog */}
       <Dialog open={isVideoDialogOpen} onOpenChange={setIsVideoDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -241,7 +228,6 @@ export function ArticleEditor({
         </DialogContent>
       </Dialog>
 
-      {/* Author and Scheduling Dialog */}
       <Dialog open={isAuthorDialogOpen} onOpenChange={setIsAuthorDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
