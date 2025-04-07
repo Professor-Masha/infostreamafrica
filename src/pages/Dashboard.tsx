@@ -18,7 +18,7 @@ const featuredArticle = {
   category: "Middle East",
   image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
   isNew: true,
-  status: 'published',
+  status: "published" as const,
 };
 
 // Secondary features
@@ -33,7 +33,7 @@ const secondaryFeatures = [
     category: "Middle East",
     image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isTrending: true,
-    status: 'published',
+    status: "published" as const,
   },
   {
     id: "3",
@@ -44,7 +44,7 @@ const secondaryFeatures = [
     author: "US & Canada Correspondent",
     category: "Business",
     image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
-    status: 'published',
+    status: "published" as const,
   },
 ];
 
@@ -60,7 +60,7 @@ const articles = [
     category: "Europe",
     image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isNew: false,
-    status: 'published',
+    status: "published" as const,
   },
   {
     id: "5",
@@ -72,7 +72,7 @@ const articles = [
     category: "Business",
     image: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isTrending: true,
-    status: 'published',
+    status: "published" as const,
   },
   {
     id: "6",
@@ -84,7 +84,7 @@ const articles = [
     category: "Health",
     image: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1100&q=80",
     isUpdated: true,
-    status: 'published',
+    status: "published" as const,
   },
 ];
 
