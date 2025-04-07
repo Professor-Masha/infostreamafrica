@@ -19,7 +19,8 @@ import {
   Newspaper,
   BarChart,
   Video,
-  Play
+  Play,
+  Briefcase
 } from "lucide-react";
 import { 
   Sidebar as UISidebar, 
@@ -35,14 +36,16 @@ import {
   SidebarTrigger,
   useSidebar
 } from "@/components/ui/sidebar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { SearchBar } from "@/components/SearchBar";
 
 export function Sidebar({ className }: { className?: string }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { state, setOpen } = useSidebar();
   const { user } = useAuth();
+  const [showSearch, setShowSearch] = useState(false);
   
   useEffect(() => {
     const handleHover = () => {
@@ -55,6 +58,7 @@ export function Sidebar({ className }: { className?: string }) {
 
       group.addEventListener('mouseleave', () => {
         setOpen(false);
+        setShowSearch(false); // Close search when sidebar collapses
       });
     };
 
@@ -77,8 +81,9 @@ export function Sidebar({ className }: { className?: string }) {
     },
     {
       name: "Search",
-      href: "/search",
+      href: "#",
       icon: Search,
+      onClick: () => setShowSearch(!showSearch),
     },
     {
       name: "Trending",
@@ -110,6 +115,11 @@ export function Sidebar({ className }: { className?: string }) {
       name: "Africa",
       href: "/africa",
       icon: Flag,
+    },
+    {
+      name: "Business",
+      href: "/business",
+      icon: Briefcase,
     },
     {
       name: "Sports",
@@ -156,6 +166,11 @@ export function Sidebar({ className }: { className?: string }) {
     },
   ];
 
+  const handleSearch = (query: string) => {
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+    setShowSearch(false);
+  };
+
   return (
     <>
       <UISidebar className={className}>
@@ -173,6 +188,16 @@ export function Sidebar({ className }: { className?: string }) {
           </SidebarHeader>
 
           <SidebarContent>
+            {showSearch && (
+              <div className="p-3">
+                <SearchBar 
+                  onSearch={handleSearch} 
+                  defaultExpanded={true} 
+                  placeholder="Search for news..."
+                />
+              </div>
+            )}
+            
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -180,7 +205,13 @@ export function Sidebar({ className }: { className?: string }) {
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
                         isActive={location.pathname === item.href}
-                        onClick={() => navigate(item.href)}
+                        onClick={() => {
+                          if (item.onClick) {
+                            item.onClick();
+                          } else if (item.href) {
+                            navigate(item.href);
+                          }
+                        }}
                         tooltip={state === "collapsed" ? item.name : undefined}
                       >
                         <item.icon className="h-4 w-4" />

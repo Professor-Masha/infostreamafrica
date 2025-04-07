@@ -16,6 +16,7 @@ export function MainNavigation() {
     { name: "Home", path: "/" },
     { name: "News", path: "/world-news" },
     { name: "Africa", path: "/africa" },
+    { name: "Business", path: "/business" },
     { name: "Health", path: "/health" },
     { name: "Science", path: "/science" },
     { name: "Technology", path: "/technology" },
@@ -26,7 +27,7 @@ export function MainNavigation() {
   ];
 
   return (
-    <nav className="border-b border-gray-200 bg-background">
+    <nav className="bg-background">
       <div className="max-w-7xl mx-auto">
         <ul className="flex overflow-x-auto whitespace-nowrap">
           {navigationItems.map((item) => (

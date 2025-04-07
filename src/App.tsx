@@ -29,6 +29,7 @@ import Health from "@/pages/Health";
 import Technology from "@/pages/Technology";
 import Journals from "@/pages/Journals";
 import Conferences from "@/pages/Conferences";
+import Business from "@/pages/Business";
 import MyArticles from "@/pages/MyArticles";
 import BlogEditor from "@/pages/BlogEditor";
 import { AdminLayout } from "@/components/AdminLayout";
@@ -117,6 +118,7 @@ const App = () => {
                     {/* Category pages */}
                     <Route path="/world-news" element={<WorldNews />} />
                     <Route path="/africa" element={<Africa />} />
+                    <Route path="/business" element={<Business />} />
                     <Route path="/sports" element={<Sports />} />
                     <Route path="/history" element={<HistoryPage />} />
                     <Route path="/science" element={<Science />} />

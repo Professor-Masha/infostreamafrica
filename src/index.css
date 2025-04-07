@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -239,6 +240,21 @@
   .text-sm {
     @apply text-base;
   }
+  
+  /* Make featured article text more readable on mobile */
+  .featured-article-title {
+    @apply text-xl leading-tight;
+  }
+  
+  /* Reduce padding on cards for mobile */
+  .article-card {
+    @apply p-3;
+  }
+  
+  /* Adjust grid layouts for mobile */
+  .secondary-features-grid {
+    @apply grid-cols-1 gap-4;
+  }
 }
 
 /* Image optimization */
@@ -273,4 +289,37 @@ img {
   .overlay.active {
     @apply block;
   }
+  
+  /* Make sure horizontal nav takes full width on mobile */
+  .main-navigation ul {
+    @apply w-full;
+  }
+  
+  /* Ensure content sections stack properly on mobile */
+  .dashboard-layout {
+    @apply flex-col;
+  }
+}
+
+/* Consistent spacing for all devices */
+.section-spacing {
+  @apply my-4 md:my-6 lg:my-8;
+}
+
+/* BBC-style layout improvements */
+.bbc-layout {
+  @apply max-w-7xl mx-auto;
+}
+
+.bbc-featured {
+  @apply relative rounded-lg overflow-hidden;
+}
+
+/* Improve notification appearance */
+.notification-item {
+  @apply border-l-4 border-transparent hover:border-primary transition-colors;
+}
+
+.notification-unread {
+  @apply border-l-4 border-primary bg-primary/5;
 }
